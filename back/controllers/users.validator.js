@@ -8,5 +8,10 @@ module.exports = {
     validator.body('lastName').exists().withMessage('lastname required'),
     validator.body('password').exists().isLength({min: 4}),
     utils.validate,
+  ],
+  login: [
+    validator.body('email').exists().isEmail().withMessage('email required'),
+    validator.body('password').exists().withMessage('password required'),
+    utils.validate,
   ]
 }

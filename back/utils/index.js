@@ -21,7 +21,6 @@ module.exports = {
       return this.respond(res, 422, {message: 'invalid parameters', errors: errors.array()});
     }
     next();
-
   },
 
   hashPassword: function (password) {
@@ -34,6 +33,18 @@ module.exports = {
         }
       });
     });
+  },
+
+  comparePassword: function (plain, hashed) {
+    return new Promise(((resolve, reject) => {
+      bcrypt.compare(plain, hashed, function (err, match) {
+        if (err) {
+          reject(err)
+        } else {
+          resolve(match)
+        }
+      })
+    }))
   },
 
   decryptToken: function (req, next) {
