@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  db:
+    build: ./db
+    image: eznvoice_db
+    ports:
+      - "5432:5432"
+  back:
+    build: ./back
+    image: eznvoice_back
+    ports:
+      - "8080:8080"
+    network_mode: host
