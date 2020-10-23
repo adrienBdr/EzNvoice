@@ -64,10 +64,8 @@ module.exports = {
         if (err) {
           return next({success: false, message: 'Failed to authenticate token.'}, null);
         } else {
-          console.warn( JSON.stringify(decoded))
           db.User.findOne({where: {id: decoded.id}}).then(user => {
             if (user) {
-              console.warn("user found")
               return next(null, user);
             } else {
               return next({success: false, message: 'invalid token'}, null);

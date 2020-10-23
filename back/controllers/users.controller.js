@@ -38,7 +38,7 @@ module.exports = {
       password
     } = req.body
 
-    await db.User.findOne({
+    db.User.findOne({
       attributes: ['id', 'password'],
       where: {email: email}
     }).then(user => {
@@ -46,30 +46,91 @@ module.exports = {
         utils.respond(res, 400, {message: "Incorrect email or password"});
       } else {
         utils.comparePassword(password, user.password).then(isMatch => {
-          const token = jwt.sign({id: user.id}, config.secret, {expiresIn: 86400});
-          utils.resSuccess(res, [{token: token}]);
-        }).catch(err => {
-          utils.respond(res, 400, {message: "Incorrect email or password"});
+          if (isMatch) {
+            const token = jwt.sign({id: user.id}, config.secret, {expiresIn: 86400});
+            return utils.resSuccess(res, [{token: token}]);
+          } else {
+            return utils.respond(res, 400, {message: "Incorrect email or password"});
+          }
+        }).catch(() => {
+          return utils.respond(res, 400, {message: "Database Error"});
         })
       }
     }).catch(err => {
-      utils.respond(res, 400, {message: err});
+      return utils.respond(res, 400, {message: err});
     })
   },
 
   getMe: async function(req, res, next) {
     const userDB = req.user;
-    if (!userDB) {
-      return res.status(400).json({message: 'User not found'});
-    }
 
     db.User.findOne({
       attributes: ['id', 'firstName', 'lastName', 'email'],
       where: {id: userDB.id}
     }).then(user => {
       if (user) {
-        utils.resSuccess(res, [user]);
+        return utils.resSuccess(res, [user]);
+      }
+    }).catch(err => {
+      return utils.respond(res, 400, err)
+    });
+  },
+
+  getUser: async function(req, res, next) {
+    if (req.query.id) {
+      db.User.findOne({
+        attributes: ['id', 'firstName', 'lastName', 'email'],
+        where: {id: req.query.id}
+      }).then(user => {
+        if (user) {
+          return utils.resSuccess(res, [user]);
+        } else {
+          return utils.respond(res, 400, 'User not found.')
+        }
+      }).catch(err => {
+        return utils.respond(res, 400, err)
+      });
+    } else {
+      next();
+    }
+  },
+
+  updateUser: async function(req, res, next) {
+    const userDB = req.user;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+    } = req.body;
+
+    userDB.firstName = firstName ? firstName : userDB.firstName;
+    userDB.lastName = lastName ? lastName : userDB.lastName;
+    userDB.email = email ? email : userDB.email;
+    userDB.password = password ?
+      await utils.hashPassword(password)
+        .then(hash => {return hash})
+        .catch(() => {return userDB.password}) :
+      userDB.password;
+
+    userDB.save().then(() => {
+      return utils.resSuccess(res, [], "User updated")
+    }).catch(err => {
+      if (err.name === 'SequelizeUniqueConstraintError') {
+        return utils.respond(res, 400, {message: 'Email already exist'})
+      } else {
+        return utils.respond(res, 400, {message: err})
       }
     });
+  },
+
+  deleteUser: async function(req, res, next) {
+    const userDB = req.user;
+
+    userDB.destroy().then(() => {
+      return utils.resSuccess(res, [], "User deleted")
+    }).catch(() => {
+      return utils.respond(res, 400, {message: "An error occurred while deleting the user"})
+    })
   }
 }
