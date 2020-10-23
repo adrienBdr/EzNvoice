@@ -47,6 +47,7 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.removeConstraint('Products', 'products_company_id_fk');
     await queryInterface.dropTable('Products');
   }
 };

@@ -20,6 +20,9 @@ module.exports = {
       address: {
         type: Sequelize.STRING
       },
+      email: {
+        type: Sequelize.STRING
+      },
       phone: {
         type: Sequelize.STRING
       },
@@ -47,6 +50,7 @@ module.exports = {
       );
   },
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.removeConstraint('Companies', 'user_id_fk');
     await queryInterface.dropTable('Companies');
   }
 };

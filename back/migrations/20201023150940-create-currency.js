@@ -51,6 +51,8 @@ module.exports = {
     );
   },
   down: async (queryInterface, Sequelize) => {
+    await queryInterface.removeConstraint('Invoices', 'invoices_currency_id_fk');
+    await queryInterface.removeConstraint('Products', 'products_currency_id_fk');
     await queryInterface.dropTable('Currencies');
   }
 };
