@@ -4,11 +4,26 @@ module.exports = {
   authenticate: function (req, res, next) {
     utils.decryptToken(req, (err, user) => {
       if (err) {
-        return res.status(401).json(err);
+        return utils.respond(res, 401, err);
       } else {
         req.user = user;
         next();
       }
-    })
+    });
+  },
+
+  authorizeCompany: function (req, res, next) {
+    utils.getCompany(req, (err, company) => {
+      if (err) {
+        return utils.respond(res, 401, err);
+      } else {
+        if (company.user_id === req.user.id) {
+          req.company = company;
+          next();
+        } else {
+          return utils.respond(res, 401, {success: false, message: 'Company doesn\'t belong to this user'});
+        }
+      }
+    });
   }
 };

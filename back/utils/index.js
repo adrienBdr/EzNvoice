@@ -8,17 +8,22 @@ const saltRounds = 10;
 module.exports = {
 
   respond: function(res, status, body) {
-    res.status(status).json(body);
+    return res.status(status).json(body);
   },
 
   resSuccess: function (res, data, message = "success",  code = 200) {
-    this.respond(res, code, {message: message, data: data});
+    return module.exports.respond(res, code, {message: message, data: data});
+  },
+
+  resDbError: function (res, err) {
+    console.log(JSON.stringify(err));
+    return module.exports.respond(res, 400, {message: 'Database error'});
   },
 
   validate: function(req, res, next) {
     const errors = validator.validationResult(req);
     if (!errors.isEmpty()) {
-      return this.respond(res, 422, {message: 'invalid parameters', errors: errors.array()});
+      return module.exports.respond(res, 422, {message: 'invalid parameters', errors: errors.array()});
     }
     next();
   },
@@ -71,7 +76,8 @@ module.exports = {
               return next({success: false, message: 'invalid token'}, null);
             }
           }).catch(error => {
-            console.warn(error)
+            console.log(JSON.stringify(error));
+            return next({success: false, message: 'User not found'}, null);
           })
         }
       });
@@ -82,6 +88,22 @@ module.exports = {
         message: 'No token provided.'
       }, null);
 
+    }
+  },
+
+  getCompany: function(req, next) {
+    if (req.query.id) {
+      db.Company.findOne({where: {id: req.query.id}}).then(company => {
+        if (company) {
+          return next(null, company);
+        } else {
+          return next({success: false, message: 'Company not found'}, null);
+        }
+      }).catch(err => {
+        this.resDbError(err);
+      })
+    } else {
+      return next({success: false, message: 'Company id is mandatory'}, null);
     }
   }
 }

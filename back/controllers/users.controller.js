@@ -24,11 +24,11 @@ module.exports = {
         if (err.name === 'SequelizeUniqueConstraintError') {
           utils.respond(res, 400, {message: 'Email already exist'})
         } else {
-          utils.respond(res, 400, {message: err})
+          utils.resDbError(err);
         }
       })
     }).catch(err => {
-      utils.respond(res, 400, {message: err})
+      utils.resDbError(err);
     })
   },
 
@@ -52,8 +52,8 @@ module.exports = {
           } else {
             return utils.respond(res, 400, {message: "Incorrect email or password"});
           }
-        }).catch(() => {
-          return utils.respond(res, 400, {message: "Database Error"});
+        }).catch(err => {
+          utils.resDbError(err);
         })
       }
     }).catch(err => {
@@ -114,12 +114,12 @@ module.exports = {
       userDB.password;
 
     userDB.save().then(() => {
-      return utils.resSuccess(res, [], "User updated")
+      return utils.resSuccess(res, [], "User updated");
     }).catch(err => {
       if (err.name === 'SequelizeUniqueConstraintError') {
-        return utils.respond(res, 400, {message: 'Email already exist'})
+        return utils.respond(res, 400, {message: 'Email already exist'});
       } else {
-        return utils.respond(res, 400, {message: err})
+        utils.resDbError(err);
       }
     });
   },
@@ -128,9 +128,9 @@ module.exports = {
     const userDB = req.user;
 
     userDB.destroy().then(() => {
-      return utils.resSuccess(res, [], "User deleted")
-    }).catch(() => {
-      return utils.respond(res, 400, {message: "An error occurred while deleting the user"})
+      return utils.resSuccess(res, [], "User deleted");
+    }).catch(err => {
+      utils.resDbError(err);
     })
   }
 }

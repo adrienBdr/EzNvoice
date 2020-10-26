@@ -8,8 +8,10 @@ const router = express.Router();
 router.route('/')
   .all(auth.authenticate)
   .post(validator.create, controller.createCompany)
-  .put(controller.updateCompany)
-  .delete(controller.deleteCompany)
-  .get(controller.getCompany)
+  .put(auth.authorizeCompany, controller.updateCompany)
+  .delete(auth.authorizeCompany, controller.deleteCompany)
+  .get(auth.authorizeCompany, controller.getCompany)
+
+router.get('/list', auth.authenticate, validator.list ,controller.getMyCompaniesList);
 
 module.exports = router;
