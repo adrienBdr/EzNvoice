@@ -100,10 +100,30 @@ module.exports = {
           return next({success: false, message: 'Company not found'}, null);
         }
       }).catch(err => {
-        this.resDbError(err);
+        module.exports.resDbError(err);
       })
     } else {
       return next({success: false, message: 'Company id is mandatory'}, null);
+    }
+  },
+
+  getCustomer: function (req, next) {
+    if (req.query.id) {
+      db.Customer.findByPk(req.query.id).then(customer => {
+        if (customer) {
+          db.Company.findByPk(customer.company_id).then(company => {
+            return next(null, customer, company);
+          }).catch(() => {
+            return next({success: false, message: 'Customer\'s company not found'}, null, null);
+          })
+        } else {
+          return next({success: false, message: 'Customer not found'}, null, null);
+        }
+      }).catch(err => {
+        module.exports.resDbError(err);
+      })
+    } else {
+      return next({success: false, message: 'Customer id is mandatory'}, null, null);
     }
   }
 }
