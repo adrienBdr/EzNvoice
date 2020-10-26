@@ -40,5 +40,20 @@ module.exports = {
         }
       }
     })
-  }
+  },
+
+  authorizeProduct: function (req, res, next) {
+    utils.getProduct(req, (err, product, company) => {
+      if (err) {
+        return utils.respond(res, 401, err);
+      } else {
+        if (product.company_id === company.id && company.user_id === req.user.id) {
+          req.product = product;
+          next();
+        } else {
+          return utils.respond(res, 401, {success: false, message: 'Product doesn\'t belong to a user\'s Company'});
+        }
+      }
+    })
+  },
 };

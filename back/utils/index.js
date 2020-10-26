@@ -125,5 +125,25 @@ module.exports = {
     } else {
       return next({success: false, message: 'Customer id is mandatory'}, null, null);
     }
+  },
+
+  getProduct: function (req, next) {
+    if (req.query.id) {
+      db.Product.findByPk(req.query.id).then(product => {
+        if (product) {
+          db.Company.findByPk(product.company_id).then(company => {
+            return next(null, product, company);
+          }).catch(() => {
+            return next({success: false, message: 'Product\'s company not found'}, null, null);
+          })
+        } else {
+          return next({success: false, message: 'Product not found'}, null, null);
+        }
+      }).catch(err => {
+        module.exports.resDbError(err);
+      })
+    } else {
+      return next({success: false, message: 'Product id is mandatory'}, null, null);
+    }
   }
 }
