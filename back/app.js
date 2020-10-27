@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const passport = require('passport')
 const db = require('./models');
 const routes = require('./routes');
-const PORT = 8081;
+const PORT = 8080;
 const HOST = '0.0.0.0';
 const app = express();
 

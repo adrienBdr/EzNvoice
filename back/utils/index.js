@@ -145,5 +145,31 @@ module.exports = {
     } else {
       return next({success: false, message: 'Product id is mandatory'}, null, null);
     }
+  },
+
+  getInvoice: function (req, next) {
+    if (req.query.id) {
+      db.Invoice.findByPk(req.query.id).then(invoice => {
+        if (invoice) {
+          db.Company.findByPk(invoice.company_id).then(company => {
+            return next(null, invoice, company);
+          }).catch(() => {
+            return next({success: false, message: 'Invoice\'s company not found'}, null, null);
+          })
+        } else {
+          return next({success: false, message: 'Invoice not found'}, null, null);
+        }
+      }).catch(err => {
+        module.exports.resDbError(err);
+      })
+    } else {
+      return next({success: false, message: 'Invoice id is mandatory'}, null, null);
+    }
+  },
+
+  euToJsDate: function(date) {
+    const dateParts = date.split("/");
+
+    return new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
   }
 }

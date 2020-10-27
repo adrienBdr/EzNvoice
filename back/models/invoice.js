@@ -15,8 +15,12 @@ module.exports = (sequelize, DataTypes) => {
   };
   Invoice.init({
     date: DataTypes.DATE,
-    company: DataTypes.INTEGER,
-    client: DataTypes.INTEGER,
+    date_due: DataTypes.DATE,
+    company_id: DataTypes.INTEGER,
+    customer_id: DataTypes.INTEGER,
+    total: DataTypes.FLOAT,
+    tax: DataTypes.FLOAT,
+    currency_id: DataTypes.INTEGER,
     file: DataTypes.STRING
   }, {
     sequelize,

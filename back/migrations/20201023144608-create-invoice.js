@@ -11,6 +11,9 @@ module.exports = {
       date: {
         type: Sequelize.DATE
       },
+      date_due: {
+        type: Sequelize.DATE
+      },
       company_id: {
         type: Sequelize.INTEGER
       },
@@ -18,6 +21,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       total: {
+        type: Sequelize.REAL
+      },
+      tax: {
         type: Sequelize.REAL
       },
       currency_id: {

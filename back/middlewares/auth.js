@@ -56,4 +56,19 @@ module.exports = {
       }
     })
   },
+
+  authorizeInvoice: function (req, res, next) {
+    utils.getInvoice(req, (err, invoice, company) => {
+      if (err) {
+        return utils.respond(res, 401, err);
+      } else {
+        if (invoice.company_id === company.id && company.user_id === req.user.id) {
+          req.invoice = invoice;
+          next();
+        } else {
+          return utils.respond(res, 401, {success: false, message: 'Invoice doesn\'t belong to a user\'s Company'});
+        }
+      }
+    })
+  },
 };
