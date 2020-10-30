@@ -1,0 +1,12 @@
+export const COLOR_BLACK = '#000000';
+export const COLOR_WHITE = '#ffffff';
+export const COLOR_GREY_100 = '#f5f5f5';
+export const COLOR_GREY_200 = '#eeeeee';
+export const COLOR_GREY_400 = '#c6c6c6';
+export const COLOR_GREY_500 = '#9e9e9e';
+export const COLOR_GREY_700 = '#616161';
+export const COLOR_PRIMARY = '#7ae582';
+export const COLOR_PRIMARY_LIGHT = '#9fffcb';
+export const COLOR_PRIMARY_DARK = '#25a18e';
+export const COLOR_SECONDARY = '#00a5cf';
+export const COLOR_SECONDARY_DARK = '#004e64';
