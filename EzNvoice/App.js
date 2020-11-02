@@ -1,11 +1,11 @@
 import React from 'react';
 import { ThemeProvider } from 'react-native-elements';
-import Login from './src/views/login';
+import NavigationTree from './src/navigator';
 
 export default function App() {
   return (
     <ThemeProvider>
-      <Login />
+      <NavigationTree />
     </ThemeProvider>
   );
 }

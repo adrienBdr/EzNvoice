@@ -1,34 +1,82 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { View, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import BgLogin from '../components/BgLogin';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SPACING_UNIT } from '../consts/spacing';
 import {
   COLOR_PRIMARY, COLOR_SECONDARY
 } from '../consts/colors';
 import KeyboardBlurOverlay from '../components/KeyboardBlurOverlay';
-import { TEXT_LOGIN_LOG_BUTTON, TEXT_LOGIN_REG_BUTTON } from '../consts/strings/fr';
-import { NAVIGATE_REGISTER } from '../consts/navigator';
-import User from '../entities/user';
+import {
+  TEXT_REGISTER_LOG_BUTTON,
+  TEXT_REGISTER_REG_BUTTON
+} from '../consts/strings/fr';
+import BgRegister from '../components/BgRegister';
+import { NAVIGATE_LOGIN } from '../consts/navigator';
 
-const Login = ({ navigation }) => {
+const Register = ({ navigation }) => {
   const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   });
-  const [user] = useState(new User());
-  const onSubmit = (data) => {
-    user.signIn(data);
-  };
+  const onSubmit = (data) => console.log(data);
 
   return (
     <View style={styles.container}>
-      <BgLogin style={styles.background} />
+      <BgRegister style={styles.background} />
       <KeyboardBlurOverlay />
       <View style={styles.formContainer}>
+
+        <View style={styles.nameContainerStyle}>
+          <Controller
+            name="name"
+            defaultValue=""
+            control={control}
+            render={({ value, onChange }) => (
+              <Input
+                placeholder="Nom"
+                leftIcon={(
+                  <Icon
+                    name="user"
+                    size={24}
+                    color={COLOR_SECONDARY}
+                  />
+                )}
+                errorMessage={errors.name?.message}
+                inputContainerStyle={styles.inputContainerStyle}
+                containerStyle={styles.inputsNameContainerStyle}
+                value={value}
+                onChangeText={(data) => onChange(data)}
+              />
+            )}
+          />
+
+          <Controller
+            name="surname"
+            defaultValue=""
+            control={control}
+            render={({ value, onChange }) => (
+              <Input
+                placeholder="Prénom"
+                leftIcon={(
+                  <Icon
+                    name="user"
+                    size={24}
+                    color={COLOR_SECONDARY}
+                  />
+                )}
+                errorMessage={errors.surname?.message}
+                inputContainerStyle={styles.inputContainerStyle}
+                containerStyle={styles.inputsNameContainerStyle}
+                value={value}
+                onChangeText={(data) => onChange(data)}
+              />
+            )}
+          />
+        </View>
+
         <Controller
           name="email"
           defaultValue=""
@@ -76,18 +124,42 @@ const Login = ({ navigation }) => {
           )}
         />
 
+        <Controller
+          name="confirmPassword"
+          defaultValue=""
+          control={control}
+          render={({ value, onChange }) => (
+            <Input
+              placeholder="Confirm Password"
+              leftIcon={(
+                <Icon
+                  name="lock"
+                  size={24}
+                  color={COLOR_SECONDARY}
+                />
+              )}
+              secureTextEntry
+              errorMessage={errors.confirmPassword?.message}
+              inputContainerStyle={styles.inputContainerStyle}
+              containerStyle={styles.containerStyle}
+              value={value}
+              onChangeText={(data) => onChange(data)}
+            />
+          )}
+        />
+
         <View style={styles.formButtonsView}>
           <Button
-            title={TEXT_LOGIN_LOG_BUTTON}
+            title={TEXT_REGISTER_REG_BUTTON}
             buttonStyle={{ backgroundColor: COLOR_SECONDARY }}
             onPress={handleSubmit(onSubmit)}
           />
 
           <Button
-            title={TEXT_LOGIN_REG_BUTTON}
+            title={TEXT_REGISTER_LOG_BUTTON}
             type="clear"
             titleStyle={{ color: COLOR_PRIMARY }}
-            onPress={() => navigation.navigate(NAVIGATE_REGISTER)}
+            onPress={() => navigation.navigate(NAVIGATE_LOGIN)}
           />
         </View>
       </View>
@@ -96,8 +168,12 @@ const Login = ({ navigation }) => {
 };
 
 const schema = yup.object().shape({
-  email: yup.string().required(),
+  name: yup.string().required(),
+  surname: yup.string().required(),
+  email: yup.string().email().required(),
   password: yup.string().required(),
+  confirmPassword: yup.string().required()
+    .oneOf([yup.ref('password'), null], 'Password and confirmation musts match'),
 });
 
 const styles = StyleSheet.create({
@@ -116,7 +192,7 @@ const styles = StyleSheet.create({
   formContainer: {
     display: 'flex',
     flexDirection: 'column',
-    flex: 0.72,
+    flex: 0.80,
     alignItems: 'center',
     justifyContent: 'center',
     padding: SPACING_UNIT * 6
@@ -127,6 +203,13 @@ const styles = StyleSheet.create({
   containerStyle: {
     marginBottom: SPACING_UNIT * 2
   },
+  inputsNameContainerStyle: {
+    marginBottom: SPACING_UNIT * 2,
+    flex: 0.5
+  },
+  nameContainerStyle: {
+    display: 'flex', flexDirection: 'row'
+  },
   formButtonsView: {
     display: 'flex',
     width: '100%',
@@ -136,4 +219,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+export default Register;

@@ -2,6 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75e8a710-7590-4a0b-8220-20430b690138" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/assets/BackgroundLeft.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/assets/BackgroundRight.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/components/BackgroundLeft/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/consts/strings/fr.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/consts/strings/fr.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/navigator/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/navigator/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/views/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/views/login.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/yarn.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,7 +40,7 @@
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../EzNvoice" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -77,6 +86,7 @@
       <updated>1603288553367</updated>
       <workItem from="1603288554466" duration="61230000" />
       <workItem from="1603897561646" duration="19000" />
+      <workItem from="1604339482072" duration="608000" />
     </task>
     <servers />
   </component>
