@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { View, StyleSheet } from 'react-native';
@@ -12,16 +12,28 @@ import {
 } from '../consts/colors';
 import KeyboardBlurOverlay from '../components/KeyboardBlurOverlay';
 import { TEXT_LOGIN_LOG_BUTTON, TEXT_LOGIN_REG_BUTTON } from '../consts/strings/fr';
-import { NAVIGATE_REGISTER } from '../consts/navigator';
+import { NAVIGATE_HOME_NAVIGATOR, NAVIGATE_REGISTER } from '../consts/navigator';
 import User from '../entities/user';
+import AppContext from '../context';
 
 const Login = ({ navigation }) => {
+  const context = useContext(AppContext);
   const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   });
   const [user] = useState(new User());
-  const onSubmit = (data) => {
-    user.signIn(data);
+
+  const onSubmit = async (data) => {
+    if (await user.signIn(data)) {
+      if (await user.init()) {
+        context.setUser(user);
+        navigation.navigate(NAVIGATE_HOME_NAVIGATOR);
+      } else {
+        console.log('api error !');
+      }
+    } else {
+      errors.password = { message: 'test' };
+    }
   };
 
   return (

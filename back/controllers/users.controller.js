@@ -6,6 +6,7 @@ const config = require('../config/config.json');
 module.exports = {
   createUser: async function(req, res, next) {
     const {
+      image,
       firstName,
       lastName,
       email,
@@ -14,6 +15,7 @@ module.exports = {
 
     utils.hashPassword(password).then(hash => {
       db.User.create({
+        image: image || '',
         firstName: firstName,
         lastName: lastName,
         email: email,
@@ -65,7 +67,7 @@ module.exports = {
     const userDB = req.user;
 
     db.User.findOne({
-      attributes: ['id', 'firstName', 'lastName', 'email'],
+      attributes: ['id', 'image', 'firstName', 'lastName', 'email'],
       where: {id: userDB.id}
     }).then(user => {
       if (user) {

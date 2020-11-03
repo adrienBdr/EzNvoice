@@ -16,12 +16,22 @@ import {
 } from '../consts/strings/fr';
 import BgRegister from '../components/BgRegister';
 import { NAVIGATE_LOGIN } from '../consts/navigator';
+import User from '../entities/user';
 
 const Register = ({ navigation }) => {
   const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   });
-  const onSubmit = (data) => console.log(data);
+
+  const onSubmit = async (data) => {
+    const user = new User();
+
+    if (await user.create(data)) {
+      navigation.navigate(NAVIGATE_LOGIN);
+    } else {
+      console.log('Error');
+    }
+  };
 
   return (
     <View style={styles.container}>
