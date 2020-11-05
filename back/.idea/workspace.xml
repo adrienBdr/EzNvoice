@@ -2,19 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="75e8a710-7590-4a0b-8220-20430b690138" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/api/apiProvider.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/api/apiProvider.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/consts/navigator.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/consts/navigator.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/entities/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/entities/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/navigator/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/navigator/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/views/login.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/views/login.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/views/register.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/views/register.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../EzNvoice/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../EzNvoice/src/views/home.js" beforeDir="false" afterPath="$PROJECT_DIR$/../EzNvoice/src/views/home.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/controllers/users.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/users.controller.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/migrations/20201022145110-create-user.js" beforeDir="false" afterPath="$PROJECT_DIR$/migrations/20201022145110-create-user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/models/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/models/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/controllers/company.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/controllers/company.controller.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -91,6 +81,7 @@
       <workItem from="1603897561646" duration="19000" />
       <workItem from="1604339482072" duration="2430000" />
       <workItem from="1604417031541" duration="849000" />
+      <workItem from="1604487095557" duration="28000" />
     </task>
     <servers />
   </component>

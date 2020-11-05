@@ -5,6 +5,7 @@ export const COLOR_GREY_200 = '#eeeeee';
 export const COLOR_GREY_400 = '#c6c6c6';
 export const COLOR_GREY_500 = '#9e9e9e';
 export const COLOR_GREY_700 = '#616161';
+export const COLOR_GREY_900 = '#3e3e3e';
 export const COLOR_PRIMARY = '#7ae582';
 export const COLOR_PRIMARY_LIGHT = '#9fffcb';
 export const COLOR_PRIMARY_DARK = '#25a18e';

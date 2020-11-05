@@ -65,7 +65,7 @@ module.exports = {
 
   getMyCompaniesList: async function(req, res, next) {
     await db.Company.findAll({
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name', 'image'],
       where: {user_id: req.user.id},
       offset: req.query.offset ? req.query.offset : 0,
       limit: req.query.limit

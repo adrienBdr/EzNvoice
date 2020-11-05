@@ -1,5 +1,13 @@
 import ApiProvider from '../api/apiProvider';
-import { ENDPOINT_AUTH_LOGIN, ENDPOINT_AUTH_REGISTER, ENDPOINT_USER } from '../api/endpoints';
+import {
+  ENDPOINT_AUTH_LOGIN,
+  ENDPOINT_AUTH_REGISTER,
+  ENDPOINT_COMPANY_LIST,
+  ENDPOINT_CURRENCY_LIST,
+  ENDPOINT_USER
+} from '../api/endpoints';
+import Company from './company';
+import Currency from './currency';
 
 class User {
   #provider = new ApiProvider();
@@ -73,6 +81,38 @@ class User {
       });
     }
     return false;
+  }
+
+  async listCompanies(limit, offset) {
+    return this.#provider.get(`${ENDPOINT_COMPANY_LIST}?limit=${limit}&offset=${offset}`, this.config)
+      .then((r) => {
+        const companies = [];
+        r.data.data.forEach((company) => {
+          const companyObj = new Company(this.config);
+          companyObj.initFromData(company);
+          companies.push(companyObj);
+        });
+        return companies;
+      }).catch((e) => {
+        console.log(e.response);
+        return null;
+      });
+  }
+
+  async listCurrencies() {
+    return this.#provider.get({ ENDPOINT_CURRENCY_LIST }, this.config)
+      .then((r) => {
+        const currencies = [];
+        r.data.data.forEach((currency) => {
+          const currencyObj = new Currency(this.config);
+          currencyObj.initFromData(currency);
+          currencies.push(currencyObj);
+        });
+        return currencies;
+      }).catch((e) => {
+        console.log(e.response);
+        return null;
+      });
   }
 
 }
