@@ -63,6 +63,7 @@ const MyFlatList = forwardRef(({ renderItem, source, horizontal = false }, ref) 
       ListFooterComponent={contextListFooter()}
       renderItem={renderItem}
       horizontal={horizontal}
+      showsHorizontalScrollIndicator={false}
     />
   );
 });

@@ -15,13 +15,13 @@ import AppContext from '../../context';
 import { SPACING_UNIT } from '../../consts/spacing';
 import MyFlatList from '../../components/MyFlatList';
 import {
+  COLOR_GREY_200,
   COLOR_GREY_700, COLOR_PRIMARY, COLOR_PRIMARY_LIGHT, COLOR_SECONDARY, COLOR_WHITE
 } from '../../consts/colors';
 import InvoiceCard from '../../components/invoiceCard';
 import {
   NAVIGATE_COMPANY_CREATE,
   NAVIGATE_CUSTOMER_CREATE,
-  NAVIGATE_PRODUCT,
   NAVIGATE_PRODUCT_CREATE
 } from '../../consts/navigator';
 
@@ -121,21 +121,25 @@ const DetailCompany = ({ navigation, route }) => {
           <Text h3 style={styles.containerDataTitle}>Clients</Text>
           <MyFlatList
             renderItem={({ item }) => (
-              <TouchableHighlight onPress={() => {
-                item.initFromId(item.id).then(() => {
-                  navigation.navigate(NAVIGATE_CUSTOMER_CREATE, { company, customer: item });
-                });
-              }}
-              >
-                <Card wrapperStyle={styles.clientCard}>
-                  <Icon
-                    name="user"
-                    size={60}
-                    color={COLOR_SECONDARY}
-                  />
-                  <Text h4>{item.name}</Text>
-                </Card>
-              </TouchableHighlight>
+              <Card>
+                <TouchableHighlight
+                  underlayColor={COLOR_GREY_200}
+                  onPress={() => {
+                    item.initFromId(item.id).then(() => {
+                      navigation.navigate(NAVIGATE_CUSTOMER_CREATE, { company, customer: item });
+                    });
+                  }}
+                >
+                  <View style={styles.clientCard}>
+                    <Icon
+                      name="user"
+                      size={60}
+                      color={COLOR_SECONDARY}
+                    />
+                    <Text h4>{item.name}</Text>
+                  </View>
+                </TouchableHighlight>
+              </Card>
             )}
             source={(limit, offset) => company.listCustomers(limit, offset)}
             horizontal
