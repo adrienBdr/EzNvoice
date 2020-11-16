@@ -6,7 +6,9 @@ import { COLOR_GREY_700, COLOR_PRIMARY_LIGHT } from '../../consts/colors';
 const ViewNumericInfo = ({ containerStyle, title, data }) => {
   return (
     <View style={containerStyle}>
-      <Text style={styles.normalTitleText}>{title}</Text>
+      {
+        title ? <Text style={styles.normalTitleText}>{title}</Text> : <></>
+      }
       <View style={styles.normalRoundedView}>
         <Text
           style={styles.normalDataText}

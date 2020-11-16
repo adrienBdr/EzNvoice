@@ -79,7 +79,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   profileImage: {
-    margin: SPACING_UNIT, borderRadius: 100, overflow: 'hidden'
+    margin: SPACING_UNIT,
+    borderRadius: 100,
+    overflow: 'hidden'
   },
   profileImageSize: {
     width: 120, height: 120

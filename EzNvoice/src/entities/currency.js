@@ -19,7 +19,7 @@ class Currency {
   async initFromId(id) {
     return this.#provider.get(`${ENDPOINT_CURRENCY}?id=${id}`, this.userConfig)
       .then((res) => {
-        const currency = res.data.data[0];
+        const currency = res.data.data;
         this.id = currency.id;
         this.name = currency.name;
         this.sign = currency.sign;

@@ -1,27 +1,35 @@
 import React, { forwardRef, useImperativeHandle, useState } from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import {
+  ActivityIndicator, FlatList, View, StyleSheet
+} from 'react-native';
 import { COLOR_PRIMARY_LIGHT } from '../../consts/colors';
 
-const MyFlatList = forwardRef(({ renderItem, source }, ref) => {
+const MyFlatList = forwardRef(({ renderItem, source, horizontal = false }, ref) => {
   const [loading, setLoading] = useState(true);
   const [endValues, setEndValues] = useState(false);
   const limit = 5;
   const [offset, setOffset] = useState(0);
-  const [companiesList, setCompaniesList] = useState([]);
+  const [valuesList, setValuesList] = useState([]);
 
   useImperativeHandle(ref, () => ({
     async refresh() {
-      await fetchCompanies();
+      await fetchValues();
+    },
+    clear() {
+      setValuesList([]);
+      setOffset(0);
+      setEndValues(false);
     }
   }));
 
-  const fetchCompanies = async () => {
+  const fetchValues = async () => {
     setLoading(true);
     const buffValues = await source(limit, offset);
+
     if (buffValues.length === null || buffValues.length === 0) {
       setEndValues(true);
     } else {
-      setCompaniesList(companiesList.concat(buffValues));
+      setValuesList(valuesList.concat(buffValues));
       setOffset(offset + buffValues.length);
     }
     setLoading(false);
@@ -44,17 +52,25 @@ const MyFlatList = forwardRef(({ renderItem, source }, ref) => {
 
   return (
     <FlatList
-      data={companiesList}
+      data={valuesList}
       keyExtractor={(item) => { return item.id.toString(); }}
       onEndReached={async () => {
-        await fetchCompanies();
+        await fetchValues();
       }}
+      style={styles.listContainerStyle}
       onEndReachedThreshold={0.5}
       initialNumToRender={limit}
       ListFooterComponent={contextListFooter()}
       renderItem={renderItem}
+      horizontal={horizontal}
     />
   );
+});
+
+const styles = StyleSheet.create({
+  listContainerStyle: {
+    width: '100%'
+  }
 });
 
 export default MyFlatList;

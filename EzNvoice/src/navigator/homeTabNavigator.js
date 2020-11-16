@@ -4,8 +4,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { NAVIGATE_COMPANY, NAVIGATE_HOME, NAVIGATE_INVOICE } from '../consts/navigator';
 import Home from '../views/home';
 import { COLOR_GREY_400, COLOR_SECONDARY } from '../consts/colors';
-import Company from '../views/company';
 import Invoice from '../views/invoice';
+import CompanyStackNavigator from './companyStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -46,7 +46,7 @@ const HomeTabNavigator = () => {
         showLabel: false
       }}
     >
-      <Tab.Screen name={NAVIGATE_COMPANY} component={Company} />
+      <Tab.Screen name={NAVIGATE_COMPANY} component={CompanyStackNavigator} />
       <Tab.Screen name={NAVIGATE_HOME} component={Home} />
       <Tab.Screen name={NAVIGATE_INVOICE} component={Invoice} />
     </Tab.Navigator>

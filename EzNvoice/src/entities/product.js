@@ -10,6 +10,8 @@ class Product {
 
   name;
 
+  options;
+
   price;
 
   companyId;
@@ -25,8 +27,10 @@ class Product {
       .then((res) => {
         const product = res.data.data[0];
         this.currencyId = product.currency_id;
+        this.companyId = product.company_id;
         this.id = product.id;
         this.name = product.name;
+        this.options = product.options;
         this.price = product.price;
         return true;
       }).catch((e) => {
@@ -39,6 +43,7 @@ class Product {
     this.currencyId = data.currency_id;
     this.id = data.id;
     this.name = data.name;
+    this.options = data.options;
     this.price = data.price;
   }
 

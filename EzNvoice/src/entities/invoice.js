@@ -1,5 +1,8 @@
 import ApiProvider from '../api/apiProvider';
 import { ENDPOINT_INVOICE } from '../api/endpoints';
+import dateFormatting from '../utils';
+import Customer from './customer';
+import Currency from './currency';
 
 class Invoice {
   #provider = new ApiProvider();
@@ -35,6 +38,8 @@ class Invoice {
         this.currencyId = invoice.company_id;
         this.currencyId = invoice.currency_id;
         this.currencyId = invoice.customer_id;
+        this.date = invoice.date;
+        this.dateDue = invoice.date_due;
         this.id = invoice.id;
         this.total = invoice.total;
         this.tax = invoice.tax;
@@ -47,9 +52,11 @@ class Invoice {
   }
 
   initFromData(data) {
-    this.currencyId = data.company_id;
+    this.companyId = data.company_id;
     this.currencyId = data.currency_id;
-    this.currencyId = data.customer_id;
+    this.customerId = data.customer_id;
+    this.dateDue = dateFormatting(data.date_due);
+    this.date = dateFormatting(data.date);
     this.id = data.id;
     this.total = data.total;
     this.tax = data.tax;
@@ -72,6 +79,18 @@ class Invoice {
       console.log(e.response);
       return false;
     });
+  }
+
+  async getCustomer() {
+    const customer = new Customer(this.userConfig);
+    await customer.initFromId(this.customerId);
+    return customer;
+  }
+
+  async getCurrency() {
+    const currency = new Currency(this.userConfig);
+    await currency.initFromId(this.currencyId);
+    return currency;
   }
 
 }

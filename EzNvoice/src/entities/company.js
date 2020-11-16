@@ -91,7 +91,7 @@ class Company {
         r.data.data.forEach((customer) => {
           const customerObj = new Customer(this.userConfig);
           customerObj.initFromData(customer);
-          customers.push(customers);
+          customers.push(customerObj);
         });
         return customers;
       }).catch((e) => {
