@@ -1,5 +1,5 @@
 import React, {
-  useContext, useEffect, useRef, useState
+  useContext, useEffect, useState
 } from 'react';
 import {
   Keyboard, StyleSheet, View
@@ -9,61 +9,61 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Controller, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import AppContext from '../../context';
-import Company from '../../entities/company';
-import MyImagePicker from '../../components/MyImagePicker';
-import { SPACING_UNIT } from '../../consts/spacing';
-import { COLOR_SECONDARY } from '../../consts/colors';
-import KeyboardBlurOverlay from '../../components/KeyboardBlurOverlay';
+import AppContext from '../context';
+import { SPACING_UNIT } from '../consts/spacing';
+import { COLOR_PRIMARY, COLOR_SECONDARY } from '../consts/colors';
+import KeyboardBlurOverlay from '../components/KeyboardBlurOverlay';
+import Product from '../entities/product';
 
-const CreateCompany = ({ navigation, route }) => {
+const CreateProduct = ({ navigation, route }) => {
   const context = useContext(AppContext);
   const { user } = context;
   const { control, handleSubmit, errors } = useForm({
     resolver: yupResolver(schema)
   });
-  const { company } = route.params ? route.params : {};
-  const [usingCompany, setUsingCompany] = useState(new Company(user.config));
+  const { company, product } = route.params;
+  const [usingProduct, setUsingProduct] = useState(new Product(user.config));
   const [isKeyboard, setIsKeyboard] = useState(false);
-  const imagePickerRef = useRef();
 
   useEffect(() => {
-    if (typeof company !== 'undefined') {
-      setUsingCompany(company);
+    if (typeof product !== 'undefined') {
+      setUsingProduct(product);
     }
     Keyboard.addListener('keyboardDidShow', () => setIsKeyboard(true));
     Keyboard.addListener('keyboardDidHide', () => setIsKeyboard(false));
   });
 
   const onSubmit = async (data) => {
-    const dataWithImage = imagePickerRef.current.didModify() || typeof usingCompany.id !== 'undefined'
-      ? { ...data, image: imagePickerRef.current.getImage() }
-      : data;
-
-    if (typeof usingCompany.id !== 'undefined') {
-      await usingCompany.update(dataWithImage);
+    if (typeof usingProduct.id !== 'undefined') {
+      await usingProduct.update({ ...data, company_id: company.id, currency_id: 1 });
     } else {
-      await usingCompany.create(dataWithImage);
+      await usingProduct.create({ ...data, company_id: company.id, currency_id: 1 });
     }
-    context.setIsCompaniesModified(true);
+    context.setIsProductsModified(true);
     navigation.pop();
   };
 
   return (
     <View style={styles.defaultContainer}>
-      <MyImagePicker ref={imagePickerRef} imageLink={company ? company.image : null} />
+      <View style={styles.imageContainer}>
+        <Icon
+          name="glass"
+          size={150}
+          color={COLOR_PRIMARY}
+        />
+      </View>
       <KeyboardBlurOverlay />
       <View style={isKeyboard ? styles.formViewContainerKeyboard : styles.formViewContainer}>
         <Controller
           name="name"
-          defaultValue={company ? company.name : ''}
+          defaultValue={product ? product.name : ''}
           control={control}
           render={({ value, onChange }) => (
             <Input
-              placeholder="Nom"
+              placeholder="Nom du produit"
               leftIcon={(
                 <Icon
-                  name="building"
+                  name="tag"
                   size={24}
                   color={COLOR_SECONDARY}
                 />
@@ -78,20 +78,20 @@ const CreateCompany = ({ navigation, route }) => {
         />
 
         <Controller
-          name="address"
-          defaultValue={company ? company.address : ''}
+          name="options"
+          defaultValue={product ? product.options : ''}
           control={control}
           render={({ value, onChange }) => (
             <Input
-              placeholder="Adresse"
+              placeholder="Options"
               leftIcon={(
                 <Icon
-                  name="home"
+                  name="gear"
                   size={24}
                   color={COLOR_SECONDARY}
                 />
               )}
-              errorMessage={errors.address?.message}
+              errorMessage={errors.options?.message}
               inputContainerStyle={styles.inputContainerStyle}
               containerStyle={styles.containerStyle}
               value={value}
@@ -101,20 +101,20 @@ const CreateCompany = ({ navigation, route }) => {
         />
 
         <Controller
-          name="email"
-          defaultValue={company ? company.email : ''}
+          name="price"
+          defaultValue={product ? product.price.toString() : ''}
           control={control}
           render={({ value, onChange }) => (
             <Input
-              placeholder="Email"
+              placeholder="Prix"
               leftIcon={(
                 <Icon
-                  name="envelope"
+                  name="money"
                   size={24}
                   color={COLOR_SECONDARY}
                 />
               )}
-              errorMessage={errors.email?.message}
+              errorMessage={errors.price?.message}
               inputContainerStyle={styles.inputContainerStyle}
               containerStyle={styles.containerStyle}
               value={value}
@@ -123,28 +123,6 @@ const CreateCompany = ({ navigation, route }) => {
           )}
         />
 
-        <Controller
-          name="phone"
-          defaultValue={company ? company.phone : ''}
-          control={control}
-          render={({ value, onChange }) => (
-            <Input
-              placeholder="Téléphone"
-              leftIcon={(
-                <Icon
-                  name="mobile"
-                  size={24}
-                  color={COLOR_SECONDARY}
-                />
-              )}
-              errorMessage={errors.phone?.message}
-              inputContainerStyle={styles.inputContainerStyle}
-              containerStyle={styles.containerStyle}
-              value={value}
-              onChangeText={(data) => onChange(data)}
-            />
-          )}
-        />
       </View>
 
       <View style={{ marginBottom: SPACING_UNIT * 3 }}>
@@ -160,14 +138,13 @@ const CreateCompany = ({ navigation, route }) => {
 
 const schema = yup.object().shape({
   name: yup.string().required(),
-  address: yup.string().required(),
-  email: yup.string().required(),
+  price: yup.number().required()
 });
 
 const styles = StyleSheet.create({
   formViewContainer: {
     width: '100%',
-    padding: SPACING_UNIT * 3
+    padding: SPACING_UNIT * 3,
   },
   formViewContainerKeyboard: {
     position: 'absolute',
@@ -178,7 +155,7 @@ const styles = StyleSheet.create({
   },
   defaultContainer: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
     alignItems: 'center',
     padding: SPACING_UNIT,
   },
@@ -188,6 +165,11 @@ const styles = StyleSheet.create({
   containerStyle: {
     marginBottom: SPACING_UNIT * 2
   },
+  imageContainer: {
+    width: 180,
+    height: 180,
+    alignItems: 'center',
+  },
 });
 
-export default CreateCompany;
+export default CreateProduct;

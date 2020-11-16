@@ -18,7 +18,7 @@ import {
   COLOR_GREY_700, COLOR_PRIMARY, COLOR_PRIMARY_LIGHT, COLOR_SECONDARY, COLOR_WHITE
 } from '../../consts/colors';
 import InvoiceCard from '../../components/invoiceCard';
-import { NAVIGATE_COMPANY_CREATE } from '../../consts/navigator';
+import { NAVIGATE_COMPANY_CREATE, NAVIGATE_PRODUCT, NAVIGATE_PRODUCT_CREATE } from '../../consts/navigator';
 
 const DetailCompany = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -30,19 +30,49 @@ const DetailCompany = ({ navigation, route }) => {
 
   useFocusEffect(
     useCallback(() => {
+      async function clearAndRefreshProducts() {
+        await refFlatListProd.current.clear();
+        await refFlatListProd.current.refresh();
+      }
+
+      async function clearAndRefreshClients() {
+        await refFlatListCli.current.clear();
+        await refFlatListCli.current.refresh();
+      }
+
+      async function clearAndRefreshInvoices() {
+        await refFlatListInvoices.current.clear();
+        await refFlatListInvoices.current.refresh();
+      }
+
       const newCompany = new Company(user.config);
       newCompany.initFromId(route.params.company.id).then(() => {
         setCompany(newCompany);
-        refFlatListProd.current.refresh();
-        refFlatListCli.current.refresh();
-        refFlatListInvoices.current.refresh();
+
+        if (context.isProductsModified) {
+          clearAndRefreshProducts().then(() => context.setIsProductsModified(false));
+        } else {
+          refFlatListProd.current.refresh();
+        }
+
+        if (context.isClientsModified) {
+          clearAndRefreshClients().then(() => context.setIsClientsModified(false));
+        } else {
+          refFlatListCli.current.refresh();
+        }
+
+        if (context.isInvoicesModified) {
+          clearAndRefreshInvoices().then(() => context.setIsInvoicesModified(false));
+        } else {
+          refFlatListInvoices.current.refresh();
+        }
       });
     }, [route.params.company.id, user.config])
   );
 
   return (
-    <View style={{ display: 'flex', flex: 1 }}>
-      <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollContainer}>
 
         <View style={styles.profileContainer}>
           <View style={styles.profileImageContainer}>
@@ -71,6 +101,9 @@ const DetailCompany = ({ navigation, route }) => {
                 button={{ title: 'Modifier' }}
                 title={item.name}
                 info={item.options.split(';')}
+                onButtonPress={() => {
+                  navigation.navigate(NAVIGATE_PRODUCT_CREATE, { company, product: item });
+                }}
               />
             )}
             source={(limit, offset) => company.listProducts(limit, offset)}
@@ -126,7 +159,7 @@ const DetailCompany = ({ navigation, route }) => {
             color={COLOR_WHITE}
           />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor={COLOR_PRIMARY_LIGHT} title="Créer un produit">
+        <ActionButton.Item buttonColor={COLOR_PRIMARY_LIGHT} title="Créer un produit" onPress={() => navigation.navigate(NAVIGATE_PRODUCT_CREATE, { company })}>
           <Icon
             name="glass"
             size={22}
@@ -147,6 +180,10 @@ const DetailCompany = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   container: {
+    display: 'flex',
+    flex: 1
+  },
+  scrollContainer: {
     display: 'flex',
     flex: 1,
     flexDirection: 'column',
