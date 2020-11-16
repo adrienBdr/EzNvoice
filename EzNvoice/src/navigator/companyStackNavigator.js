@@ -3,13 +3,14 @@ import { createStackNavigator } from '@react-navigation/stack';
 import {
   NAVIGATE_COMPANY,
   NAVIGATE_COMPANY_CREATE,
-  NAVIGATE_COMPANY_DETAIL,
+  NAVIGATE_COMPANY_DETAIL, NAVIGATE_CUSTOMER_CREATE,
   NAVIGATE_PRODUCT_CREATE
 } from '../consts/navigator';
 import ListCompany from '../views/companies/listCompany';
 import DetailCompany from '../views/companies/detailCompany';
 import CreateCompany from '../views/companies/createCompany';
 import CreateProduct from '../views/createProduct';
+import CreateCustomer from '../views/createCustomer';
 
 const Stack = createStackNavigator();
 
@@ -41,6 +42,13 @@ const CompanyStackNavigator = () => {
           title: route.params.product ? 'Modifier un produit' : 'Créer un produit'
         })}
         component={CreateProduct}
+      />
+      <Stack.Screen
+        name={NAVIGATE_CUSTOMER_CREATE}
+        options={({ route }) => ({
+          title: route.params.customer ? 'Modifier un client' : 'Créer un client'
+        })}
+        component={CreateCustomer}
       />
     </Stack.Navigator>
   );

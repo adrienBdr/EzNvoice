@@ -4,7 +4,7 @@ const AppContext = React.createContext({
   user: {},
   isCompaniesModified: false,
   isProductsModified: false,
-  isClientsModified: false,
+  isCustomersModified: false,
   isInvoicesModified: false,
   setUser(user) {
     this.user = user;
@@ -15,8 +15,8 @@ const AppContext = React.createContext({
   setIsProductsModified(value) {
     this.isProductsModified = value;
   },
-  setIsClientsModified(value) {
-    this.isClientsModified = value;
+  setIsCustomersModified(value) {
+    this.isCustomersModified = value;
   },
   setIsInvoicesModified(value) {
     this.isInvoicesModified = value;

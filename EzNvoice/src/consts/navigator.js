@@ -8,3 +8,4 @@ export const NAVIGATE_COMPANY_CREATE = 'CompanyCreate';
 export const NAVIGATE_COMPANY_DETAIL = 'CompanyDetail';
 export const NAVIGATE_PRODUCT = 'Product';
 export const NAVIGATE_PRODUCT_CREATE = 'ProductCreate';
+export const NAVIGATE_CUSTOMER_CREATE = 'CustomerCreate';

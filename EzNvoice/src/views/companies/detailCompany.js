@@ -2,7 +2,7 @@ import React, {
   useCallback, useContext, useRef, useState
 } from 'react';
 import {
-  Image, ScrollView, StyleSheet, View
+  Image, ScrollView, StyleSheet, TouchableHighlight, View
 } from 'react-native';
 import {
   Card, Divider, PricingCard, Text
@@ -18,7 +18,12 @@ import {
   COLOR_GREY_700, COLOR_PRIMARY, COLOR_PRIMARY_LIGHT, COLOR_SECONDARY, COLOR_WHITE
 } from '../../consts/colors';
 import InvoiceCard from '../../components/invoiceCard';
-import { NAVIGATE_COMPANY_CREATE, NAVIGATE_PRODUCT, NAVIGATE_PRODUCT_CREATE } from '../../consts/navigator';
+import {
+  NAVIGATE_COMPANY_CREATE,
+  NAVIGATE_CUSTOMER_CREATE,
+  NAVIGATE_PRODUCT,
+  NAVIGATE_PRODUCT_CREATE
+} from '../../consts/navigator';
 
 const DetailCompany = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -55,8 +60,8 @@ const DetailCompany = ({ navigation, route }) => {
           refFlatListProd.current.refresh();
         }
 
-        if (context.isClientsModified) {
-          clearAndRefreshClients().then(() => context.setIsClientsModified(false));
+        if (context.isCustomersModified) {
+          clearAndRefreshClients().then(() => context.setIsCustomersModified(false));
         } else {
           refFlatListCli.current.refresh();
         }
@@ -116,14 +121,21 @@ const DetailCompany = ({ navigation, route }) => {
           <Text h3 style={styles.containerDataTitle}>Clients</Text>
           <MyFlatList
             renderItem={({ item }) => (
-              <Card wrapperStyle={styles.clientCard}>
-                <Icon
-                  name="user"
-                  size={60}
-                  color={COLOR_SECONDARY}
-                />
-                <Text h4>{item.name}</Text>
-              </Card>
+              <TouchableHighlight onPress={() => {
+                item.initFromId(item.id).then(() => {
+                  navigation.navigate(NAVIGATE_CUSTOMER_CREATE, { company, customer: item });
+                });
+              }}
+              >
+                <Card wrapperStyle={styles.clientCard}>
+                  <Icon
+                    name="user"
+                    size={60}
+                    color={COLOR_SECONDARY}
+                  />
+                  <Text h4>{item.name}</Text>
+                </Card>
+              </TouchableHighlight>
             )}
             source={(limit, offset) => company.listCustomers(limit, offset)}
             horizontal
@@ -152,7 +164,7 @@ const DetailCompany = ({ navigation, route }) => {
             color={COLOR_WHITE}
           />
         </ActionButton.Item>
-        <ActionButton.Item buttonColor={COLOR_PRIMARY_LIGHT} title="Créer un client">
+        <ActionButton.Item buttonColor={COLOR_PRIMARY_LIGHT} title="Créer un client" onPress={() => navigation.navigate(NAVIGATE_CUSTOMER_CREATE, { company })}>
           <Icon
             name="user"
             size={22}
