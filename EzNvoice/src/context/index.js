@@ -6,6 +6,7 @@ const AppContext = React.createContext({
   isProductsModified: false,
   isCustomersModified: false,
   isInvoicesModified: false,
+  removeAvoidBackToLogin: () => {},
   setUser(user) {
     this.user = user;
   },
@@ -20,6 +21,9 @@ const AppContext = React.createContext({
   },
   setIsInvoicesModified(value) {
     this.isInvoicesModified = value;
+  },
+  setRemoveAvoidBackToLogin(value) {
+    this.removeAvoidBackToLogin = value;
   }
 });
 

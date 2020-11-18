@@ -1,5 +1,6 @@
 export const COLOR_BLACK = '#000000';
 export const COLOR_WHITE = '#ffffff';
+export const COLOR_RED = '#e21717';
 export const COLOR_GREY_100 = '#f5f5f5';
 export const COLOR_GREY_200 = '#eeeeee';
 export const COLOR_GREY_400 = '#c6c6c6';

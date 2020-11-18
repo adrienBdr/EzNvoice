@@ -14,6 +14,7 @@ import { SPACING_UNIT } from '../consts/spacing';
 import { COLOR_PRIMARY, COLOR_SECONDARY } from '../consts/colors';
 import KeyboardBlurOverlay from '../components/KeyboardBlurOverlay';
 import Product from '../entities/product';
+import BgRight from '../components/Backgrounds/BgRight';
 
 const CreateProduct = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -45,6 +46,7 @@ const CreateProduct = ({ navigation, route }) => {
 
   return (
     <View style={styles.defaultContainer}>
+      <BgRight />
       <View style={styles.imageContainer}>
         <Icon
           name="glass"

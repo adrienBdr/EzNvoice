@@ -24,6 +24,7 @@ import {
   NAVIGATE_CUSTOMER_CREATE,
   NAVIGATE_PRODUCT_CREATE
 } from '../../consts/navigator';
+import BgRight from '../../components/Backgrounds/BgRight';
 
 const DetailCompany = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -77,6 +78,7 @@ const DetailCompany = ({ navigation, route }) => {
 
   return (
     <View style={styles.container}>
+      <BgRight />
       <ScrollView style={styles.scrollContainer}>
 
         <View style={styles.profileContainer}>
@@ -92,8 +94,6 @@ const DetailCompany = ({ navigation, route }) => {
             <Text style={styles.profileEmailText}>{company.email}</Text>
           </View>
         </View>
-
-        <Divider />
 
         <View style={styles.containerData}>
           <Text h3 style={styles.containerDataTitle}>Produits</Text>

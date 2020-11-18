@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import ApiProvider from '../api/apiProvider';
 import {
   ENDPOINT_AUTH_LOGIN,
@@ -52,6 +53,7 @@ class User {
     return this.#provider.post(ENDPOINT_AUTH_LOGIN, data).then((res) => {
       if (res.data.message === 'success') {
         this.token = res.data.data[0]?.token;
+        this.storeToken(this.token);
         return true;
       }
       return false;
@@ -113,6 +115,37 @@ class User {
         console.log(e.response);
         return null;
       });
+  }
+
+  storeToken = async (appToken) => {
+    try {
+      await AsyncStorage.setItem('@token', appToken);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  deleteStoredToken = async () => {
+    try {
+      await AsyncStorage.removeItem('@token');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  connectWithStoredToken = async () => {
+    try {
+      const value = await AsyncStorage.getItem('@token');
+      if (value !== null) {
+        this.token = value;
+        await this.init();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      console.log(e);
+      return false;
+    }
   }
 
 }

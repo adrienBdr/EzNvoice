@@ -11,6 +11,7 @@ import MyFlatList from '../../components/MyFlatList';
 import ListCompanyCard from '../../components/ListCompanyCard';
 import { NAVIGATE_COMPANY_CREATE, NAVIGATE_COMPANY_DETAIL } from '../../consts/navigator';
 import { COLOR_PRIMARY_LIGHT } from '../../consts/colors';
+import BgRight from '../../components/Backgrounds/BgRight';
 
 const ListCompany = ({ navigation }) => {
   const context = useContext(AppContext);
@@ -33,6 +34,7 @@ const ListCompany = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <BgRight />
       <View style={styles.titleContainer}>
         <Text h1> Vos entreprises</Text>
       </View>

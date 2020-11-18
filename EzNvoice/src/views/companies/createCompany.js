@@ -15,6 +15,7 @@ import MyImagePicker from '../../components/MyImagePicker';
 import { SPACING_UNIT } from '../../consts/spacing';
 import { COLOR_SECONDARY } from '../../consts/colors';
 import KeyboardBlurOverlay from '../../components/KeyboardBlurOverlay';
+import BgRight from '../../components/Backgrounds/BgRight';
 
 const CreateCompany = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -51,6 +52,7 @@ const CreateCompany = ({ navigation, route }) => {
 
   return (
     <View style={styles.defaultContainer}>
+      <BgRight />
       <MyImagePicker ref={imagePickerRef} imageLink={company ? company.image : null} />
       <KeyboardBlurOverlay />
       <View style={isKeyboard ? styles.formViewContainerKeyboard : styles.formViewContainer}>

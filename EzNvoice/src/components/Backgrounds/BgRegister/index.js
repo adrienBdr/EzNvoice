@@ -9,10 +9,9 @@ import Svg, {
   Text,
   TSpan,
 } from 'react-native-svg';
-import { TEXT_LOGIN_TITLE, TEXT_WELCOME } from '../../consts/strings/fr';
-/* SVGR has dropped some elements not supported by react-native-svg: filter */
+import { TEXT_REGISTER_TITLE, TEXT_WELCOME } from '../../../consts/strings/fr';
 
-function BgLogin(props) {
+function BgRegister(props) {
   const { style } = props;
 
   return (
@@ -34,18 +33,18 @@ function BgLogin(props) {
       </Defs>
       <G fill="#25a18e">
         <Path
-          data-name="Trac\xE9 3"
-          d="M195.93 896H414V667.782S189.059 802.4 183.711 806.7s-10.3 9.443-13.4 20.239-2.13 20.012 0 25.88S195.93 896 195.93 896z"
+          data-name="Trac\xE9 4"
+          d="M414 375.071L413.964-.382H200.745s-91.859 158.921-92.579 160.567a37.577 37.577 0 00-1.626 22.778c2.9 11.272 8.882 18.784 13.317 22.026S414 375.071 414 375.071z"
         />
         <Path
-          data-name="Trac\xE9 2"
-          d="M.497 423.226L-.003-.001h127.17L261.79 200.057s7.926 16.29 6.377 31.037-12.577 27.952-12.577 27.952z"
+          data-name="Trac\xE9 5"
+          d="M0 637.628v257.99h163.828S19.942 654.126 16.274 649.676s-3.518-4.49-7.933-7.566A39.716 39.716 0 000 637.628z"
         />
       </G>
-      <G filter="url(#prefix__a)">
+      <G transform="translate(-109.98 -47.502)" filter="url(#prefix__a)">
         <G
           data-name="EzNvoiceLogo"
-          transform="translate(177.02 161.99)"
+          transform="translate(148.5 148.5)"
           stroke="#f3f3f3"
           fill="url(#prefix__b)"
         >
@@ -55,17 +54,21 @@ function BgLogin(props) {
       </G>
       <G fill="#fff" fontFamily="Roboto-Regular, Roboto">
         <Text
-          data-name="Bienvenue"
-          transform="translate(105.497 154.993)"
+          data-name="Bienvenue,"
+          transform="translate(300 116)"
           fontSize={39}
         >
           <TSpan x={-93.406} y={0}>
             {TEXT_WELCOME}
           </TSpan>
         </Text>
-        <Text transform="translate(90.497 243.993)" fontSize={51}>
-          <TSpan x={-62.829} y={0}>
-            {TEXT_LOGIN_TITLE}
+        <Text
+          data-name="S'inscrire"
+          transform="translate(296 193)"
+          fontSize={48}
+        >
+          <TSpan x={-97.207} y={0}>
+            {TEXT_REGISTER_TITLE}
           </TSpan>
         </Text>
       </G>
@@ -73,4 +76,4 @@ function BgLogin(props) {
   );
 }
 
-export default BgLogin;
+export default BgRegister;

@@ -1,11 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import { NAVIGATE_COMPANY, NAVIGATE_HOME, NAVIGATE_INVOICE } from '../consts/navigator';
+import {
+  NAVIGATE_COMPANY, NAVIGATE_HOME, NAVIGATE_INVOICE, NAVIGATE_PROFILE
+} from '../consts/navigator';
 import Home from '../views/home';
 import { COLOR_GREY_400, COLOR_SECONDARY } from '../consts/colors';
 import Invoice from '../views/invoice';
 import CompanyStackNavigator from './companyStackNavigator';
+import Profile from '../views/profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -26,6 +29,9 @@ const HomeTabNavigator = () => {
               break;
             case NAVIGATE_INVOICE:
               iconName = 'book';
+              break;
+            case NAVIGATE_PROFILE:
+              iconName = 'user';
               break;
             default:
               iconName = 'book';
@@ -49,6 +55,7 @@ const HomeTabNavigator = () => {
       <Tab.Screen name={NAVIGATE_COMPANY} component={CompanyStackNavigator} />
       <Tab.Screen name={NAVIGATE_HOME} component={Home} />
       <Tab.Screen name={NAVIGATE_INVOICE} component={Invoice} />
+      <Tab.Screen name={NAVIGATE_PROFILE} component={Profile} />
     </Tab.Navigator>
   );
 };

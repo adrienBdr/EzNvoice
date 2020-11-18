@@ -14,7 +14,7 @@ import {
   TEXT_REGISTER_LOG_BUTTON,
   TEXT_REGISTER_REG_BUTTON
 } from '../consts/strings/fr';
-import BgRegister from '../components/BgRegister';
+import BgRegister from '../components/Backgrounds/BgRegister';
 import { NAVIGATE_LOGIN } from '../consts/navigator';
 import User from '../entities/user';
 

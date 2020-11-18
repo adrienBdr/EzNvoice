@@ -4,6 +4,7 @@ import { Text } from 'react-native-elements';
 import AppContext from '../context';
 import { SPACING_UNIT } from '../consts/spacing';
 import CardNumericInfo from '../components/CardNumericInfo';
+import BgLeft from '../components/Backgrounds/BgLeft';
 
 const Home = ({ navigation }) => {
   const context = useContext(AppContext);
@@ -13,10 +14,15 @@ const Home = ({ navigation }) => {
     navigation.addListener('beforeRemove', (e) => {
       e.preventDefault();
     });
+    context.setRemoveAvoidBackToLogin(() => {
+      console.log('removed');
+      navigation.removeListener('beforeRemove');
+    });
   }, [navigation]);
 
   return (
     <View style={styles.container}>
+      <BgLeft />
 
       <View style={styles.profileContainer}>
         <View style={styles.profileImageContainer}>

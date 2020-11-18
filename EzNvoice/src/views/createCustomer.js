@@ -14,6 +14,7 @@ import { SPACING_UNIT } from '../consts/spacing';
 import { COLOR_PRIMARY, COLOR_SECONDARY } from '../consts/colors';
 import KeyboardBlurOverlay from '../components/KeyboardBlurOverlay';
 import Customer from '../entities/customer';
+import BgLeft from '../components/Backgrounds/BgLeft';
 
 const CreateCustomer = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -45,6 +46,7 @@ const CreateCustomer = ({ navigation, route }) => {
 
   return (
     <View style={styles.defaultContainer}>
+      <BgLeft />
       <View style={styles.imageContainer}>
         <Icon
           name="user"

@@ -5,7 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import BgLogin from '../components/BgLogin';
+import BgLogin from '../components/Backgrounds/BgLogin';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SPACING_UNIT } from '../consts/spacing';
 import {
   COLOR_PRIMARY, COLOR_SECONDARY
@@ -22,6 +22,15 @@ const Login = ({ navigation }) => {
     resolver: yupResolver(schema)
   });
   const [user] = useState(new User());
+
+  useEffect(() => {
+    user.connectWithStoredToken().then((ret) => {
+      if (ret) {
+        context.setUser(user);
+        navigation.navigate(NAVIGATE_HOME_NAVIGATOR);
+      }
+    });
+  }, [context, navigation, user]);
 
   const onSubmit = async (data) => {
     if (await user.signIn(data)) {
