@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "EzNvoice",
+    "description": "EzNvoice est une app destinée à gérer facilement vos factures lorsque vous êtes entrepreneur",
     "slug": "EzNvoice",
     "version": "1.0.0",
     "orientation": "portrait",

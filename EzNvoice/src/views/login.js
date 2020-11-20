@@ -69,6 +69,8 @@ const Login = ({ navigation }) => {
               containerStyle={styles.containerStyle}
               value={value}
               onChangeText={(data) => onChange(data)}
+              autoCompleteType="email"
+              textContentType="emailAddress"
             />
           )}
         />
@@ -93,6 +95,7 @@ const Login = ({ navigation }) => {
               containerStyle={styles.containerStyle}
               value={value}
               onChangeText={(data) => onChange(data)}
+              autoCompleteType="password"
             />
           )}
         />

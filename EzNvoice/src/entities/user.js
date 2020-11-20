@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import ApiProvider from '../api/apiProvider';
 import {
   ENDPOINT_AUTH_LOGIN,
-  ENDPOINT_AUTH_REGISTER,
+  ENDPOINT_AUTH_REGISTER, ENDPOINT_COMPANY,
   ENDPOINT_COMPANY_LIST,
   ENDPOINT_CURRENCY_LIST,
   ENDPOINT_USER
@@ -45,6 +45,32 @@ class User {
       return res.data.message === 'New user created';
     }).catch((err) => {
       console.log(err.response.data.message);
+      return false;
+    });
+  }
+
+  async update(data) {
+    let newData;
+
+    if (data.name) {
+      const splicedName = data.name.split(' ');
+      if (splicedName.length === 2) {
+        newData = { firstName: splicedName[0], lastName: splicedName[1] };
+      } else {
+        newData = { firstName: splicedName[0], lastName: ' ' };
+      }
+    } else {
+      newData = data;
+    }
+
+    return this.#provider.put(`${ENDPOINT_USER}?id=${this.id}`, newData, this.config).then(async (r) => {
+      if (r.data.message === 'User updated') {
+        await this.init();
+        return true;
+      }
+      return false;
+    }).catch((e) => {
+      console.log(e.response);
       return false;
     });
   }

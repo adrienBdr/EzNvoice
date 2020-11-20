@@ -15,10 +15,9 @@ const Home = ({ navigation }) => {
       e.preventDefault();
     });
     context.setRemoveAvoidBackToLogin(() => {
-      console.log('removed');
       navigation.removeListener('beforeRemove');
     });
-  }, [navigation]);
+  }, [context, navigation]);
 
   return (
     <View style={styles.container}>
@@ -40,7 +39,7 @@ const Home = ({ navigation }) => {
         <View style={styles.cardContainer}>
           <CardNumericInfo title="Entreprises" data={3} />
         </View>
-        <View style={{ flex: 0.5, justifyContent: 'center' }}>
+        <View style={styles.cardContainer}>
           <CardNumericInfo title="Produits" data={12} />
         </View>
       </View>
@@ -107,7 +106,8 @@ const styles = StyleSheet.create({
     flex: 0.3
   },
   cardContainer: {
-    flex: 0.5, justifyContent: 'center'
+    flex: 0.5,
+    justifyContent: 'center'
   }
 });
 

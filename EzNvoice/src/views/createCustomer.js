@@ -32,7 +32,7 @@ const CreateCustomer = ({ navigation, route }) => {
     }
     Keyboard.addListener('keyboardDidShow', () => setIsKeyboard(true));
     Keyboard.addListener('keyboardDidHide', () => setIsKeyboard(false));
-  });
+  }, [customer]);
 
   const onSubmit = async (data) => {
     if (typeof usingCustomer.id !== 'undefined') {

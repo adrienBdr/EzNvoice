@@ -32,7 +32,7 @@ const CreateProduct = ({ navigation, route }) => {
     }
     Keyboard.addListener('keyboardDidShow', () => setIsKeyboard(true));
     Keyboard.addListener('keyboardDidHide', () => setIsKeyboard(false));
-  });
+  }, [product]);
 
   const onSubmit = async (data) => {
     if (typeof usingProduct.id !== 'undefined') {

@@ -2,8 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import {
-  NAVIGATE_COMPANY_CREATE,
-  NAVIGATE_HOME_NAVIGATOR, NAVIGATE_LOGIN, NAVIGATE_PRODUCT, NAVIGATE_PRODUCT_CREATE, NAVIGATE_REGISTER
+  NAVIGATE_HOME_NAVIGATOR, NAVIGATE_LOGIN, NAVIGATE_REGISTER
 } from '../consts/navigator';
 import Login from '../views/login';
 import Register from '../views/register';

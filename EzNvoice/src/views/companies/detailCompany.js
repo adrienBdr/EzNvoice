@@ -5,7 +5,7 @@ import {
   Image, ScrollView, StyleSheet, TouchableHighlight, View
 } from 'react-native';
 import {
-  Card, Divider, PricingCard, Text
+  Card, PricingCard, Text
 } from 'react-native-elements';
 import { useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -73,7 +73,7 @@ const DetailCompany = ({ navigation, route }) => {
           refFlatListInvoices.current.refresh();
         }
       });
-    }, [route.params.company.id, user.config])
+    }, [context, route.params.company.id, user.config])
   );
 
   return (

@@ -34,7 +34,7 @@ const CreateCompany = ({ navigation, route }) => {
     }
     Keyboard.addListener('keyboardDidShow', () => setIsKeyboard(true));
     Keyboard.addListener('keyboardDidHide', () => setIsKeyboard(false));
-  });
+  }, [company]);
 
   const onSubmit = async (data) => {
     const dataWithImage = imagePickerRef.current.didModify() || typeof usingCompany.id !== 'undefined'
