@@ -115,13 +115,15 @@ module.exports = {
 
     if (image) {
       const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-      const key = `user-${uuidv4()}`;
+      const key = `user-${uuidv4()}.png`;
 
       try {
       await s3.putObject({
         ACL: 'public-read',
         Bucket: 'ez-invoice-bucket',
         Key: key,
+        ContentEncoding: 'base64',
+        ContentType: 'image/jpeg',
         Body: image
       }).promise();
       } catch (e) {

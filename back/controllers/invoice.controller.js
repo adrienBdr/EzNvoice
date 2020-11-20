@@ -18,12 +18,14 @@ module.exports = {
     } = req.body
 
     const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-    const key = `invoice-${uuidv4()}`;
+    const key = `invoice-${uuidv4()}.png`;
 
     s3.putObject({
       ACL: 'public-read',
       Bucket: 'ez-invoice-bucket',
       Key: key,
+      ContentEncoding: 'base64',
+      ContentType: 'image/jpeg',
       Body: file
     }, (err, data) => {
     if (err) {
