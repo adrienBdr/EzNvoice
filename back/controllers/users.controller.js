@@ -3,6 +3,7 @@ const db = require('../models');
 const jwt = require('jsonwebtoken');
 const utils = require('../utils');
 const config = require('../config/config.json');
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
   createUser: async function(req, res, next) {
