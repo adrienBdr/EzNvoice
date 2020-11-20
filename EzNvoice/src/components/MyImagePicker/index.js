@@ -34,9 +34,11 @@ const MyImagePicker = forwardRef(({ imageLink }, ref) => {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       quality: 1,
+      base64: true
     });
 
     if (!result.cancelled) {
+      console.log(result.base64);
       setImage(result.uri);
       setModified(true);
     }
