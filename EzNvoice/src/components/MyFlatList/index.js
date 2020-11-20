@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 import { COLOR_PRIMARY_LIGHT } from '../../consts/colors';
 
-const MyFlatList = forwardRef(({ renderItem, source, horizontal = false }, ref) => {
+const MyFlatList = forwardRef(({
+  renderItem, source, horizontal = false, emptyComponent
+}, ref) => {
   const [loading, setLoading] = useState(true);
   const [endValues, setEndValues] = useState(false);
   const limit = 5;
@@ -64,6 +66,7 @@ const MyFlatList = forwardRef(({ renderItem, source, horizontal = false }, ref) 
       renderItem={renderItem}
       horizontal={horizontal}
       showsHorizontalScrollIndicator={false}
+      ListEmptyComponent={emptyComponent}
     />
   );
 });

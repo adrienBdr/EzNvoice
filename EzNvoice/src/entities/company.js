@@ -1,3 +1,4 @@
+import { Toast } from 'native-base';
 import ApiProvider from '../api/apiProvider';
 import {
   ENDPOINT_COMPANY,
@@ -8,6 +9,7 @@ import {
 import Customer from './customer';
 import Product from './product';
 import Invoice from './invoice';
+import DEFAULT_IMAGE from '../consts/images';
 
 class Company {
   #provider = new ApiProvider();
@@ -36,13 +38,20 @@ class Company {
         const company = r.data.data[0];
         this.id = company.id;
         this.name = company.name;
-        this.image = company.image;
+        if (!company.image) {
+          this.image = DEFAULT_IMAGE;
+        } else {
+          this.image = `https://ez-invoice-bucket.s3.eu-west-3.amazonaws.com/${company.image}`;
+        }
         this.address = company.address;
         this.email = company.email;
         this.phone = company.phone;
         return true;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return false;
       });
   }
@@ -50,7 +59,11 @@ class Company {
   initFromData(data) {
     this.id = data.id;
     this.name = data.name;
-    this.image = data.image;
+    if (!data.image) {
+      this.image = DEFAULT_IMAGE;
+    } else {
+      this.image = `https://ez-invoice-bucket.s3.eu-west-3.amazonaws.com/${data.image}`;
+    }
     this.address = data.address;
     this.email = data.email;
     this.phone = data.phone;
@@ -59,8 +72,11 @@ class Company {
   async create(data) {
     return this.#provider.post(ENDPOINT_COMPANY, data, this.userConfig).then((r) => {
       return r.data.message === 'New company created';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -68,8 +84,11 @@ class Company {
   async delete() {
     return this.#provider.delete(`${ENDPOINT_COMPANY}?id=${this.id}`, this.userConfig).then((r) => {
       return r.data.message === 'Company deleted';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -77,8 +96,11 @@ class Company {
   async update(data) {
     return this.#provider.put(`${ENDPOINT_COMPANY}?id=${this.id}`, data, this.userConfig).then((r) => {
       return r.data.message === 'Company updated';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -94,8 +116,11 @@ class Company {
           customers.push(customerObj);
         });
         return customers;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return null;
       });
   }
@@ -112,8 +137,11 @@ class Company {
           products.push(productObj);
         });
         return products;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return null;
       });
   }
@@ -130,8 +158,11 @@ class Company {
           invoices.push(invoiceObj);
         });
         return invoices;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return null;
       });
   }

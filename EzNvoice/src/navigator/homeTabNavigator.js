@@ -6,7 +6,6 @@ import {
 } from '../consts/navigator';
 import Home from '../views/home';
 import { COLOR_GREY_400, COLOR_SECONDARY } from '../consts/colors';
-import Invoice from '../views/invoice';
 import CompanyStackNavigator from './companyStackNavigator';
 import Profile from '../views/profile';
 
@@ -54,7 +53,6 @@ const HomeTabNavigator = () => {
     >
       <Tab.Screen name={NAVIGATE_COMPANY} component={CompanyStackNavigator} />
       <Tab.Screen name={NAVIGATE_HOME} component={Home} />
-      <Tab.Screen name={NAVIGATE_INVOICE} component={Invoice} />
       <Tab.Screen name={NAVIGATE_PROFILE} component={Profile} />
     </Tab.Navigator>
   );

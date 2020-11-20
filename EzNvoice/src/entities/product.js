@@ -1,3 +1,4 @@
+import { Toast } from 'native-base';
 import ApiProvider from '../api/apiProvider';
 import { ENDPOINT_PRODUCT } from '../api/endpoints';
 
@@ -33,8 +34,11 @@ class Product {
         this.options = product.options;
         this.price = product.price;
         return true;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return false;
       });
   }
@@ -50,8 +54,11 @@ class Product {
   async create(data) {
     return this.#provider.post(ENDPOINT_PRODUCT, data, this.userConfig).then((r) => {
       return r.data.message === 'New product created';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -59,8 +66,11 @@ class Product {
   async delete() {
     return this.#provider.delete(`${ENDPOINT_PRODUCT}?id=${this.id}`, this.userConfig).then((r) => {
       return r.data.message === 'Product deleted';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -68,8 +78,11 @@ class Product {
   async update(data) {
     return this.#provider.put(`${ENDPOINT_PRODUCT}?id=${this.id}`, data, this.userConfig).then((r) => {
       return r.data.message === 'Product updated';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }

@@ -1,3 +1,4 @@
+import { Toast } from 'native-base';
 import ApiProvider from '../api/apiProvider';
 import { ENDPOINT_CUSTOMER } from '../api/endpoints';
 
@@ -33,8 +34,11 @@ class Customer {
         this.email = customer.email;
         this.phone = customer.phone;
         return true;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return false;
       });
   }
@@ -51,8 +55,11 @@ class Customer {
   async create(data) {
     return this.#provider.post(ENDPOINT_CUSTOMER, data, this.userConfig).then((r) => {
       return r.data.message === 'New customer created';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -60,8 +67,11 @@ class Customer {
   async delete() {
     return this.#provider.delete(`${ENDPOINT_CUSTOMER}?id=${this.id}`, this.userConfig).then((r) => {
       return r.data.message === 'Customer deleted';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -69,8 +79,11 @@ class Customer {
   async update(data) {
     return this.#provider.put(`${ENDPOINT_CUSTOMER}?id=${this.id}`, data, this.userConfig).then((r) => {
       return r.data.message === 'Customer updated';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }

@@ -1,3 +1,4 @@
+import { Toast } from 'native-base';
 import ApiProvider from '../api/apiProvider';
 import { ENDPOINT_INVOICE } from '../api/endpoints';
 import dateFormatting from '../utils';
@@ -45,8 +46,11 @@ class Invoice {
         this.tax = invoice.tax;
         this.file = invoice.file;
         return true;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return false;
       });
   }
@@ -66,8 +70,11 @@ class Invoice {
   async create(data) {
     return this.#provider.post(ENDPOINT_INVOICE, data, this.userConfig).then((r) => {
       return r.data.message === 'New Invoice created';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -75,8 +82,11 @@ class Invoice {
   async delete() {
     return this.#provider.delete(`${ENDPOINT_INVOICE}?id=${this.id}`, this.userConfig).then((r) => {
       return r.data.message === 'Invoice deleted';
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }

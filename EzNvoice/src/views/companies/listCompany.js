@@ -12,6 +12,7 @@ import ListCompanyCard from '../../components/ListCompanyCard';
 import { NAVIGATE_COMPANY_CREATE, NAVIGATE_COMPANY_DETAIL } from '../../consts/navigator';
 import { COLOR_PRIMARY_LIGHT } from '../../consts/colors';
 import BgRight from '../../components/Backgrounds/BgRight';
+import EmptyComponent from '../../components/EmptyComponent';
 
 const ListCompany = ({ navigation }) => {
   const context = useContext(AppContext);
@@ -46,6 +47,9 @@ const ListCompany = ({ navigation }) => {
                 onPress={() => navigation.navigate(NAVIGATE_COMPANY_DETAIL, { company: item })}
                 company={item}
               />
+            )}
+            emptyComponent={() => (
+              <EmptyComponent onPress={() => navigation.navigate(NAVIGATE_COMPANY_CREATE)} title="Ajouter une entreprise" />
             )}
             source={(limit, offset) => user.listCompanies(limit, offset)}
             ref={refFlatList}

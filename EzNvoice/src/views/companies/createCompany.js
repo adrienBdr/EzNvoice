@@ -38,7 +38,7 @@ const CreateCompany = ({ navigation, route }) => {
 
   const onSubmit = async (data) => {
     const dataWithImage = imagePickerRef.current.didModify() || typeof usingCompany.id !== 'undefined'
-      ? { ...data, image: imagePickerRef.current.getImage() }
+      ? data
       : data;
 
     if (typeof usingCompany.id !== 'undefined') {
@@ -53,7 +53,11 @@ const CreateCompany = ({ navigation, route }) => {
   return (
     <View style={styles.defaultContainer}>
       <BgRight />
-      <MyImagePicker ref={imagePickerRef} imageLink={company ? company.image : null} />
+      <MyImagePicker
+        onSubmit={() => {}}
+        ref={imagePickerRef}
+        imageLink={company ? company.image : null}
+      />
       <KeyboardBlurOverlay />
       <View style={isKeyboard ? styles.formViewContainerKeyboard : styles.formViewContainer}>
         <Controller

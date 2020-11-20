@@ -18,13 +18,13 @@ import {
   COLOR_GREY_200,
   COLOR_GREY_700, COLOR_PRIMARY, COLOR_PRIMARY_LIGHT, COLOR_SECONDARY, COLOR_WHITE
 } from '../../consts/colors';
-import InvoiceCard from '../../components/invoiceCard';
 import {
   NAVIGATE_COMPANY_CREATE,
   NAVIGATE_CUSTOMER_CREATE,
   NAVIGATE_PRODUCT_CREATE
 } from '../../consts/navigator';
 import BgRight from '../../components/Backgrounds/BgRight';
+import EmptyComponent from '../../components/EmptyComponent';
 
 const DetailCompany = ({ navigation, route }) => {
   const context = useContext(AppContext);
@@ -32,7 +32,6 @@ const DetailCompany = ({ navigation, route }) => {
   const [company, setCompany] = useState({});
   const refFlatListProd = useRef();
   const refFlatListCli = useRef();
-  const refFlatListInvoices = useRef();
 
   useFocusEffect(
     useCallback(() => {
@@ -44,11 +43,6 @@ const DetailCompany = ({ navigation, route }) => {
       async function clearAndRefreshClients() {
         await refFlatListCli.current.clear();
         await refFlatListCli.current.refresh();
-      }
-
-      async function clearAndRefreshInvoices() {
-        await refFlatListInvoices.current.clear();
-        await refFlatListInvoices.current.refresh();
       }
 
       const newCompany = new Company(user.config);
@@ -67,11 +61,6 @@ const DetailCompany = ({ navigation, route }) => {
           refFlatListCli.current.refresh();
         }
 
-        if (context.isInvoicesModified) {
-          clearAndRefreshInvoices().then(() => context.setIsInvoicesModified(false));
-        } else {
-          refFlatListInvoices.current.refresh();
-        }
       });
     }, [context, route.params.company.id, user.config])
   );
@@ -105,11 +94,14 @@ const DetailCompany = ({ navigation, route }) => {
                 price={`${item.price}$`}
                 button={{ title: 'Modifier' }}
                 title={item.name}
-                info={item.options.split(';')}
+                info={item.options}
                 onButtonPress={() => {
                   navigation.navigate(NAVIGATE_PRODUCT_CREATE, { company, product: item });
                 }}
               />
+            )}
+            emptyComponent={() => (
+              <EmptyComponent onPress={() => { navigation.navigate(NAVIGATE_PRODUCT_CREATE, { company }); }} title="Ajouter un produit" />
             )}
             source={(limit, offset) => company.listProducts(limit, offset)}
             horizontal
@@ -141,33 +133,18 @@ const DetailCompany = ({ navigation, route }) => {
                 </TouchableHighlight>
               </Card>
             )}
+            emptyComponent={() => (
+              <EmptyComponent onPress={() => { navigation.navigate(NAVIGATE_CUSTOMER_CREATE, { company }); }} title="Ajouter un client" />
+            )}
             source={(limit, offset) => company.listCustomers(limit, offset)}
             horizontal
             ref={refFlatListCli}
           />
         </View>
 
-        <View style={styles.containerData}>
-          <Text h3 style={styles.containerDataTitle}>Factures</Text>
-          <MyFlatList
-            renderItem={({ item }) => (
-              <InvoiceCard invoice={item} />
-            )}
-            source={(limit, offset) => company.listInvoices(limit, offset)}
-            ref={refFlatListInvoices}
-          />
-        </View>
-
       </ScrollView>
 
       <ActionButton offsetX={10} offsetY={10} buttonColor={COLOR_PRIMARY}>
-        <ActionButton.Item buttonColor={COLOR_PRIMARY_LIGHT} title="Créer une facture">
-          <Icon
-            name="book"
-            size={22}
-            color={COLOR_WHITE}
-          />
-        </ActionButton.Item>
         <ActionButton.Item buttonColor={COLOR_PRIMARY_LIGHT} title="Créer un client" onPress={() => navigation.navigate(NAVIGATE_CUSTOMER_CREATE, { company })}>
           <Icon
             name="user"

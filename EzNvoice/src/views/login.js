@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { View, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useForm, Controller } from 'react-hook-form';
+import { Toast } from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import BgLogin from '../components/Backgrounds/BgLogin';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SPACING_UNIT } from '../consts/spacing';
@@ -36,9 +37,13 @@ const Login = ({ navigation }) => {
     if (await user.signIn(data)) {
       if (await user.init()) {
         context.setUser(user);
-        navigation.navigate(NAVIGATE_HOME_NAVIGATOR);
+        if (user.firstName) {
+          navigation.navigate(NAVIGATE_HOME_NAVIGATOR);
+        }
       } else {
-        console.log('api error !');
+        Toast.show({
+          text: 'Identifiants incorrectes!',
+        });
       }
     } else {
       errors.password = { message: 'test' };

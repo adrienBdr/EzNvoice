@@ -31,7 +31,7 @@ const Profile = ({ navigation }) => {
   };
 
   const onSubmit = async (data) => {
-    if (data.email !== '' && data.name !== '') {
+    if (data.email !== '' && data.name !== '' && data.image !== '') {
       await user.update(data);
     }
   };
@@ -40,7 +40,11 @@ const Profile = ({ navigation }) => {
     <View style={styles.defaultContainer}>
       <BgRight />
       <View style={styles.detailUserContainer}>
-        <MyImagePicker ref={imageRef} imageLink={user.image} />
+        <MyImagePicker
+          ref={imageRef}
+          imageLink={user.image}
+          onSubmit={(image) => onSubmit({ image })}
+        />
         <ModifiableInfo
           name="name"
           item={`${user.firstName} ${user.lastName}`}

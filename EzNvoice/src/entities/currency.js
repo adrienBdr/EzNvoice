@@ -1,3 +1,4 @@
+import { Toast } from 'native-base';
 import ApiProvider from '../api/apiProvider';
 import { ENDPOINT_CURRENCY } from '../api/endpoints';
 
@@ -24,8 +25,11 @@ class Currency {
         this.name = currency.name;
         this.sign = currency.sign;
         return true;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return false;
       });
   }

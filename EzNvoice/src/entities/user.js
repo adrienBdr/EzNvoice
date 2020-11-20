@@ -1,14 +1,17 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import * as LocalAuthentication from 'expo-local-authentication';
+import { Toast } from 'native-base';
 import ApiProvider from '../api/apiProvider';
 import {
   ENDPOINT_AUTH_LOGIN,
-  ENDPOINT_AUTH_REGISTER, ENDPOINT_COMPANY,
+  ENDPOINT_AUTH_REGISTER,
   ENDPOINT_COMPANY_LIST,
   ENDPOINT_CURRENCY_LIST,
   ENDPOINT_USER
 } from '../api/endpoints';
 import Company from './company';
 import Currency from './currency';
+import DEFAULT_IMAGE from '../consts/images';
 
 class User {
   #provider = new ApiProvider();
@@ -29,7 +32,11 @@ class User {
 
   initFromJson(data) {
     this.id = data.id;
-    this.image = data.image;
+    if (!data.image) {
+      this.image = DEFAULT_IMAGE;
+    } else {
+      this.image = `https://ez-invoice-bucket.s3.eu-west-3.amazonaws.com/${data.image}`;
+    }
     this.firstName = data.firstName;
     this.lastName = data.lastName;
     this.email = data.email;
@@ -43,8 +50,11 @@ class User {
       password: data.password,
     }).then((res) => {
       return res.data.message === 'New user created';
-    }).catch((err) => {
-      console.log(err.response.data.message);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -69,8 +79,11 @@ class User {
         return true;
       }
       return false;
-    }).catch((e) => {
-      console.log(e.response);
+    }).catch(() => {
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -83,8 +96,11 @@ class User {
         return true;
       }
       return false;
-    }).catch((err) => {
-      console.log(err.response.data.message);
+    }).catch(() => {
+      Toast.show({
+        text: 'Identifiants incorrectes !',
+        buttonText: 'Okay'
+      });
       return false;
     });
   }
@@ -103,8 +119,10 @@ class User {
           return true;
         }
         return false;
-      }).catch((e) => {
-        console.log(e.response.data.message);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+        });
         return false;
       });
     }
@@ -121,8 +139,11 @@ class User {
           companies.push(companyObj);
         });
         return companies;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return null;
       });
   }
@@ -137,8 +158,11 @@ class User {
           currencies.push(currencyObj);
         });
         return currencies;
-      }).catch((e) => {
-        console.log(e.response);
+      }).catch(() => {
+        Toast.show({
+          text: 'Erreur réseau',
+          buttonText: 'Okay'
+        });
         return null;
       });
   }
@@ -147,7 +171,9 @@ class User {
     try {
       await AsyncStorage.setItem('@token', appToken);
     } catch (e) {
-      console.log(e);
+      Toast.show({
+        text: 'Erreur réseau',
+      });
     }
   };
 
@@ -155,12 +181,31 @@ class User {
     try {
       await AsyncStorage.removeItem('@token');
     } catch (e) {
-      console.log(e);
+      Toast.show({
+        text: 'Erreur réseau',
+      });
     }
   };
 
   connectWithStoredToken = async () => {
+    const isLocalAuth = await LocalAuthentication.hasHardwareAsync();
+    const isLocalAuthRegistered = isLocalAuth ? await LocalAuthentication.isEnrolledAsync() : false;
+
     try {
+      if (isLocalAuthRegistered) {
+        return LocalAuthentication.authenticateAsync().then(async (res) => {
+          if (res) {
+            const value = await AsyncStorage.getItem('@token');
+            if (value !== null) {
+              this.token = value;
+              await this.init();
+              return true;
+            }
+            return false;
+          }
+          return false;
+        });
+      }
       const value = await AsyncStorage.getItem('@token');
       if (value !== null) {
         this.token = value;
@@ -168,8 +213,11 @@ class User {
         return true;
       }
       return false;
+
     } catch (e) {
-      console.log(e);
+      Toast.show({
+        text: 'Erreur réseau',
+      });
       return false;
     }
   }

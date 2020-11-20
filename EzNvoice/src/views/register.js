@@ -5,6 +5,7 @@ import { View, StyleSheet } from 'react-native';
 import { Input, Button } from 'react-native-elements';
 import { useForm, Controller } from 'react-hook-form';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { Toast } from 'native-base';
 import { SCREEN_HEIGHT, SCREEN_WIDTH, SPACING_UNIT } from '../consts/spacing';
 import {
   COLOR_PRIMARY, COLOR_SECONDARY
@@ -29,7 +30,10 @@ const Register = ({ navigation }) => {
     if (await user.create(data)) {
       navigation.navigate(NAVIGATE_LOGIN);
     } else {
-      console.log('Error');
+      Toast.show({
+        text: 'Erreur réseau',
+        buttonText: 'Okay'
+      });
     }
   };
 

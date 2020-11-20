@@ -1,6 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, {
+  useCallback, useContext, useEffect, useState
+} from 'react';
 import { StyleSheet, View, Image } from 'react-native';
 import { Text } from 'react-native-elements';
+import { useFocusEffect } from '@react-navigation/native';
 import AppContext from '../context';
 import { SPACING_UNIT } from '../consts/spacing';
 import CardNumericInfo from '../components/CardNumericInfo';
@@ -8,6 +11,7 @@ import BgLeft from '../components/Backgrounds/BgLeft';
 
 const Home = ({ navigation }) => {
   const context = useContext(AppContext);
+  const [usingUser, setUsingUser] = useState({});
   const { user } = context;
 
   useEffect(() => {
@@ -17,7 +21,15 @@ const Home = ({ navigation }) => {
     context.setRemoveAvoidBackToLogin(() => {
       navigation.removeListener('beforeRemove');
     });
-  }, [context, navigation]);
+    setUsingUser(user);
+  }, [context, navigation, user]);
+
+  useFocusEffect(
+    useCallback(() => {
+      setUsingUser({});
+      user.init().then(() => setUsingUser(user));
+    }, [user])
+  );
 
   return (
     <View style={styles.container}>
@@ -26,12 +38,12 @@ const Home = ({ navigation }) => {
       <View style={styles.profileContainer}>
         <View style={styles.profileImageContainer}>
           <View style={styles.profileImage}>
-            <Image source={{ uri: user.image }} style={styles.profileImageSize} />
+            <Image source={{ uri: usingUser.image }} style={styles.profileImageSize} />
           </View>
         </View>
         <View style={styles.profileInfosContainer}>
-          <Text h3>{`${user.lastName} ${user.firstName}`}</Text>
-          <Text style={styles.profileEmailText}>{`${user.email}`}</Text>
+          <Text h3>{`${usingUser.lastName} ${usingUser.firstName}`}</Text>
+          <Text style={styles.profileEmailText}>{`${usingUser.email}`}</Text>
         </View>
       </View>
 
