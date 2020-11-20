@@ -4,7 +4,6 @@ import {
 } from 'react-native';
 import { Card, Text } from 'react-native-elements';
 import { SPACING_UNIT } from '../../consts/spacing';
-import ViewNumericInfo from '../ViewNumericInfo';
 
 const ListCompanyCard = ({ onPress, company }) => {
   return (
@@ -17,7 +16,6 @@ const ListCompanyCard = ({ onPress, company }) => {
             </View>
             <Text h4>{company.name}</Text>
           </View>
-          <ViewNumericInfo containerStyle={styles.numericInfoView} data={32} />
         </View>
       </Card>
     </TouchableOpacity>
