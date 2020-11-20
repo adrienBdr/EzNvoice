@@ -5,6 +5,7 @@ const customer = require('./customer.route');
 const product = require('./product.route');
 const currency = require('./currency.route');
 const invoice = require('./invoice.route');
+const home = require('./home.route');
 
 const routers = [
   {name: '/auth', router: auth},
@@ -13,7 +14,8 @@ const routers = [
   {name: '/customer', router: customer},
   {name: '/product', router: product},
   {name: '/currency', router: currency},
-  {name: '/invoice', router: invoice}
+  {name: '/invoice', router: invoice},
+  {name: '/home', router: home}
 ]
 
 module.exports = routers;

@@ -37,10 +37,26 @@ module.exports = {
     } = req.body;
 
     companyDB.name = name ? name : companyDB.name;
-    companyDB.image = image ? image : companyDB.image;
     companyDB.email = email ? email : companyDB.email;
     companyDB.address = address ? address : companyDB.address;
     companyDB.phone = phone ? phone : companyDB.phone;
+
+    if (image) {
+      const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+      const key = `company-${uuidv4()}`;
+
+      try {
+        await s3.putObject({
+          ACL: 'public-read',
+          Bucket: 'ez-invoice-bucket',
+          Key: key,
+          Body: image
+        }).promise();
+      } catch (e) {
+        return utils.respond(res, 400, {message: 'Failed to upload image'});
+      }
+      companyDB.image = key;
+    }
 
     companyDB.save().then(() => {
       return utils.resSuccess(res, [], "Company updated");

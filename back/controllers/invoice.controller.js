@@ -1,5 +1,7 @@
+const AWS = require('aws-sdk');
 const db = require('../models');
 const utils = require("../utils");
+const { v4: uuidv4 } = require('uuid');
 
 module.exports = {
 
@@ -11,22 +13,37 @@ module.exports = {
       customer_id,
       total,
       tax,
-      currency_id
+      currency_id,
+      file,
     } = req.body
 
-    db.Invoice.create({
-      date: utils.euToJsDate(date),
-      date_due: utils.euToJsDate(date_due),
-      company_id: company_id,
-      customer_id: customer_id,
-      total: total,
-      tax: tax,
-      currency_id: currency_id,
-      file: ''
-    }).then(() => {
-      utils.resSuccess(res, [], 'New Invoice created');
-    }).catch(err => {
-      utils.resDbError(err);
+    const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+    const key = `invoice-${uuidv4()}`;
+
+    s3.putObject({
+      ACL: 'public-read',
+      Bucket: 'ez-invoice-bucket',
+      Key: key,
+      Body: file
+    }, (err, data) => {
+    if (err) {
+      return utils.resDbError(err);
+    }
+
+      db.Invoice.create({
+        date: utils.euToJsDate(date),
+        date_due: utils.euToJsDate(date_due),
+        company_id: company_id,
+        customer_id: customer_id,
+        total: total,
+        tax: tax,
+        currency_id: currency_id,
+        file: key
+      }).then(() => {
+        return utils.resSuccess(res, "GG");
+      }).catch(err => {
+        return utils.resDbError(res, err);
+      })
     })
   },
 

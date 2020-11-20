@@ -1,3 +1,4 @@
+const AWS = require('aws-sdk');
 const db = require('../models');
 const jwt = require('jsonwebtoken');
 const utils = require('../utils');
@@ -104,11 +105,30 @@ module.exports = {
       lastName,
       email,
       password,
+      image,
     } = req.body;
 
     userDB.firstName = firstName ? firstName : userDB.firstName;
     userDB.lastName = lastName ? lastName : userDB.lastName;
     userDB.email = email ? email : userDB.email;
+
+    if (image) {
+      const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+      const key = `user-${uuidv4()}`;
+
+      try {
+      await s3.putObject({
+        ACL: 'public-read',
+        Bucket: 'ez-invoice-bucket',
+        Key: key,
+        Body: image
+      }).promise();
+      } catch (e) {
+        return utils.respond(res, 400, {message: 'Failed to upload image'});
+      }
+      userDB.image = key;
+    }
+
     userDB.password = password ?
       await utils.hashPassword(password)
         .then(hash => {return hash})

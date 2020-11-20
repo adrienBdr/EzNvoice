@@ -5,6 +5,7 @@ module.exports = {
   create: [
     validator.body('date').exists(),
     validator.body('date_due').exists(),
+    validator.body('file').exists(),
     validator.body('company_id').exists().isNumeric(),
     validator.body('customer_id').exists().isNumeric(),
     validator.body('currency_id').exists().isNumeric(),
