@@ -8,6 +8,7 @@ const HOST = '0.0.0.0';
 const app = express();
 
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.json());
 
 routes.forEach(route => {
