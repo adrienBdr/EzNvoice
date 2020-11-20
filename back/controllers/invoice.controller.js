@@ -20,13 +20,14 @@ module.exports = {
     const s3 = new AWS.S3({apiVersion: '2006-03-01'});
     const key = `invoice-${uuidv4()}.png`;
 
+    const buf = Buffer.from(file.replace(/^data:image\/\w+;base64,/, ""),'base64');
     s3.putObject({
       ACL: 'public-read',
       Bucket: 'ez-invoice-bucket',
       Key: key,
       ContentEncoding: 'base64',
       ContentType: 'image/jpeg',
-      Body: file
+      Body: buf
     }, (err, data) => {
     if (err) {
       return utils.resDbError(err);

@@ -118,13 +118,14 @@ module.exports = {
       const key = `user-${uuidv4()}.png`;
 
       try {
+        const buf = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""),'base64');
       await s3.putObject({
         ACL: 'public-read',
         Bucket: 'ez-invoice-bucket',
         Key: key,
         ContentEncoding: 'base64',
         ContentType: 'image/jpeg',
-        Body: image
+        Body: buf
       }).promise();
       } catch (e) {
         return utils.respond(res, 400, {message: 'Failed to upload image'});
