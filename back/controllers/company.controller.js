@@ -29,46 +29,49 @@ module.exports = {
   },
 
   updateCompany: async function(req, res, next) {
-    const companyDB = req.company;
-    const {
-      name,
-      image,
-      email,
-      address,
-      phone
-    } = req.body;
+      const companyDB = req.company;
+      const {
+          name,
+          image,
+          email,
+          address,
+          phone
+      } = req.body;
 
-    companyDB.name = name ? name : companyDB.name;
-    companyDB.email = email ? email : companyDB.email;
-    companyDB.address = address ? address : companyDB.address;
-    companyDB.phone = phone ? phone : companyDB.phone;
+      companyDB.name = name ? name : companyDB.name;
+      companyDB.email = email ? email : companyDB.email;
+      companyDB.address = address ? address : companyDB.address;
+      companyDB.phone = phone ? phone : companyDB.phone;
 
-    if (image) {
-      const s3 = new AWS.S3({apiVersion: '2006-03-01'});
-      const key = `company-${uuidv4()}.png`;
+      if (image) {
+          const s3 = new AWS.S3({apiVersion: '2006-03-01'});
+          const key = `company-${uuidv4()}.png`;
 
-      try {
-        const buf = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""),'base64');
+          const buf = Buffer.from(image.replace(/^data:image\/\w+;base64,/, ""), 'base64');
 
-        await s3.putObject({
-          ACL: 'public-read',
-          Bucket: 'ez-invoice-bucket',
-          ContentEncoding: 'base64',
-          ContentType: 'image/jpeg',
-          Key: key,
-          Body: buf
-        }).promise();
-      } catch (e) {
-        return utils.respond(res, 400, {message: 'Failed to upload image'});
+          await s3.putObject({
+              ACL: 'public-read',
+              Bucket: 'ez-invoice-bucket',
+              ContentEncoding: 'base64',
+              ContentType: 'image/jpeg',
+              Key: key,
+              Body: buf
+          }, (err, data) => {
+
+              companyDB.image = key;
+
+              companyDB.save().then(() => {
+                  return utils.resSuccess(res, [], "Company updated");
+              }).catch(err => {
+                  return utils.resDbError(err);
+              });
+          })
       }
-      companyDB.image = key;
-    }
-
-    companyDB.save().then(() => {
-      return utils.resSuccess(res, [], "Company updated");
-    }).catch(err => {
-      utils.resDbError(err);
-    });
+      companyDB.save().then(() => {
+          return utils.resSuccess(res, [], "Company updated");
+      }).catch(err => {
+          return utils.resDbError(err);
+      });
   },
 
   deleteCompany: async function(req, res, next) {
