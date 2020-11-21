@@ -190,36 +190,27 @@ class User {
   connectWithStoredToken = async () => {
     const isLocalAuth = await LocalAuthentication.hasHardwareAsync();
     const isLocalAuthRegistered = isLocalAuth ? await LocalAuthentication.isEnrolledAsync() : false;
+    const value = await AsyncStorage.getItem('@token');
 
-    try {
-      if (isLocalAuthRegistered) {
+    if (isLocalAuthRegistered) {
+      if (value !== null) {
         return LocalAuthentication.authenticateAsync().then(async (res) => {
-          if (res) {
-            const value = await AsyncStorage.getItem('@token');
-            if (value !== null) {
-              this.token = value;
-              await this.init();
-              return true;
-            }
-            return false;
+          if (res.success) {
+            this.token = value;
+            await this.init();
+            return true;
           }
           return false;
         });
       }
-      const value = await AsyncStorage.getItem('@token');
-      if (value !== null) {
-        this.token = value;
-        await this.init();
-        return true;
-      }
-      return false;
-
-    } catch (e) {
-      Toast.show({
-        text: 'Erreur réseau',
-      });
       return false;
     }
+    if (value !== null) {
+      this.token = value;
+      await this.init();
+      return true;
+    }
+    return false;
   }
 
 }
